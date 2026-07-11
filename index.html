@@ -95,6 +95,8 @@
         .day-card.inactive { opacity: 0.6; }
         .day-card.inactive select { opacity: 0.6; pointer-events: none; }
         .day-card.inactive .day-label { opacity: 0.6; }
+        select { appearance: auto; }
+        select:disabled { opacity: 0.5; cursor: not-allowed; }
     </style>
 </head>
 <body class="font-body-md text-body-md min-h-screen flex flex-col">
@@ -112,18 +114,18 @@
     <div class="w-8"></div>
 </header>
 
-<main class="flex-grow w-full max-w-5xl mx-auto px-margin-mobile py-lg">
+<main class="flex-grow w-full max-w-6xl mx-auto px-margin-mobile py-lg">
     <!-- Headline -->
     <section class="mb-lg text-center md:text-left">
         <h1 class="font-headline-md text-headline-md md:text-display-lg md:font-display-lg text-primary mb-sm">Arma tu Menú Semanal</h1>
-        <p class="text-on-surface-variant max-w-xl">Selecciona los días que deseas pedir y elige tus proteínas, bases y toppings.</p>
+        <p class="text-on-surface-variant max-w-xl">Selecciona los días que deseas pedir y elige todos los componentes de tus comidas.</p>
     </section>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
         <!-- Left Column: Selección de días y comidas -->
-        <div class="lg:col-span-7 space-y-gutter">
+        <div class="lg:col-span-8 space-y-gutter">
             <div class="botanical-card rounded-xl p-md">
-                <h2 class="font-label-md text-label-md text-secondary uppercase tracking-widest mb-md border-b border-outline-variant/20 pb-xs">Selecciona tus Días</h2>
+                <h2 class="font-label-md text-label-md text-secondary uppercase tracking-widest mb-md border-b border-outline-variant/20 pb-xs">Selecciona tus Días y Comidas</h2>
 
                 <!-- Ubicación -->
                 <div class="mb-md">
@@ -133,8 +135,7 @@
 
                 <!-- Días de la semana -->
                 <div class="space-y-4" id="dias-container">
-                    <!-- Los días se generarán dinámicamente con JS -->
-                    <p class="text-center text-on-surface-variant animate-pulse py-4">Cargando días...</p>
+                    <p class="text-center text-on-surface-variant animate-pulse py-4">Cargando opciones...</p>
                 </div>
             </div>
 
@@ -151,10 +152,10 @@
         </div>
 
         <!-- Right Column: Resumen y envío -->
-        <div class="lg:col-span-5">
+        <div class="lg:col-span-4">
             <div class="botanical-card rounded-xl p-md sticky top-24">
                 <h2 class="font-label-md text-label-md text-primary mb-md">Resumen de tu Pedido</h2>
-                <div id="resumen-pedido" class="space-y-2 text-sm text-on-surface-variant mb-4">
+                <div id="resumen-pedido" class="space-y-2 text-sm text-on-surface-variant mb-4 max-h-[400px] overflow-y-auto">
                     <p class="text-center text-on-surface-variant/60 italic">Selecciona días y opciones para ver el resumen.</p>
                 </div>
                 <div class="h-px bg-outline-variant/30 my-sm"></div>
@@ -189,15 +190,19 @@
 
     const DIAS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
 
-    // Categorías que se cargarán desde la hoja
-    const categorias = [
-        { id: 'Proteinas', label: 'Proteínas' },
-        { id: 'Bases', label: 'Bases' },
-        { id: 'Toppings', label: 'Toppings' }
+    // Todas las categorías que se cargarán desde la hoja (deben coincidir con los nombres de las pestañas)
+    const CATEGORIAS = [
+        { id: 'Proteinas', label: 'Proteína' },
+        { id: 'Carbohidratos', label: 'Carbohidrato' },
+        { id: 'Bases', label: 'Base Keto' },
+        { id: 'Ensaladas', label: 'Ensalada' },
+        { id: 'Acompanamientos', label: 'Acompañamiento' },
+        { id: 'GrasasSaludables', label: 'Grasa Saludable' },
+        { id: 'Toppings', label: 'Topping' }
     ];
 
-    let datos = { Proteinas: [], Bases: [], Toppings: [] };
-    let selecciones = {};
+    let datos = {}; // { 'Proteinas': [...], 'Carbohidratos': [...], ... }
+    let selecciones = {}; // { 'Lunes': { almuerzo: {Proteinas: '...', ...}, cena: {...} }, ... }
 
     // ============================================================
     // FUNCIONES PARA OBTENER DATOS
@@ -226,10 +231,10 @@
         container.innerHTML = '<p class="text-center text-on-surface-variant animate-pulse py-4">Cargando opciones...</p>';
 
         // Obtener todas las categorías en paralelo
-        const promises = categorias.map(cat => fetchData(cat.id));
+        const promises = CATEGORIAS.map(cat => fetchData(cat.id));
         const resultados = await Promise.all(promises);
 
-        categorias.forEach((cat, idx) => {
+        CATEGORIAS.forEach((cat, idx) => {
             datos[cat.id] = resultados[idx] || [];
         });
 
@@ -239,6 +244,16 @@
             container.innerHTML = '<p class="text-center text-red-600">No se pudieron cargar los datos. Verifica la conexión con la hoja de cálculo.</p>';
             return;
         }
+
+        // Inicializar selecciones
+        DIAS.forEach(dia => {
+            const diaId = dia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            selecciones[dia] = { almuerzo: {}, cena: {} };
+            CATEGORIAS.forEach(cat => {
+                selecciones[dia].almuerzo[cat.id] = '';
+                selecciones[dia].cena[cat.id] = '';
+            });
+        });
 
         // Generar los días
         let html = '';
@@ -252,31 +267,45 @@
                     <input type="checkbox" id="chk-${diaId}" class="w-5 h-5 rounded day-checkbox" ${checked} onchange="toggleDia('${diaId}')">
                     <label for="chk-${diaId}" class="font-bold text-primary text-lg day-label">${dia}</label>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pl-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pl-8">
+                    <!-- ALMUERZO -->
                     <div>
-                        <label class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Almuerzo</label>
-                        <div class="space-y-1 mt-1">
-                            <select class="w-full px-2 py-1.5 text-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-white" id="alm-${diaId}">
-                                <option value="">Selecciona proteína</option>
-                                ${datos.Proteinas.map(p => `<option value="${p.nombre}">${p.nombre}</option>`).join('')}
-                            </select>
-                            <select class="w-full px-2 py-1.5 text-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-white" id="base-${diaId}">
-                                <option value="">Selecciona base</option>
-                                ${datos.Bases.map(b => `<option value="${b.nombre}">${b.nombre}</option>`).join('')}
-                            </select>
+                        <div class="bg-surface-container-low rounded-lg p-3 border border-outline-variant/20">
+                            <h4 class="text-xs font-bold text-secondary uppercase tracking-wider mb-2">🍽️ Almuerzo</h4>
+                            ${CATEGORIAS.map(cat => `
+                                <div class="mb-2">
+                                    <label class="text-xs text-on-surface-variant font-medium">${cat.label}</label>
+                                    <select class="w-full px-2 py-1.5 text-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-white" 
+                                            id="alm-${cat.id}-${diaId}" 
+                                            data-dia="${diaId}" 
+                                            data-comida="almuerzo" 
+                                            data-categoria="${cat.id}"
+                                            onchange="actualizarSeleccion('${diaId}', 'almuerzo', '${cat.id}', this.value)">
+                                        <option value="">Seleccionar</option>
+                                        ${(datos[cat.id] || []).map(item => `<option value="${item.nombre}">${item.nombre}</option>`).join('')}
+                                    </select>
+                                </div>
+                            `).join('')}
                         </div>
                     </div>
+                    <!-- CENA -->
                     <div>
-                        <label class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Cena</label>
-                        <div class="space-y-1 mt-1">
-                            <select class="w-full px-2 py-1.5 text-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-white" id="cen-${diaId}">
-                                <option value="">Selecciona proteína</option>
-                                ${datos.Proteinas.map(p => `<option value="${p.nombre}">${p.nombre}</option>`).join('')}
-                            </select>
-                            <select class="w-full px-2 py-1.5 text-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-white" id="top-${diaId}">
-                                <option value="">Selecciona topping</option>
-                                ${datos.Toppings.map(t => `<option value="${t.nombre}">${t.nombre}</option>`).join('')}
-                            </select>
+                        <div class="bg-surface-container-low rounded-lg p-3 border border-outline-variant/20">
+                            <h4 class="text-xs font-bold text-secondary uppercase tracking-wider mb-2">🌙 Cena</h4>
+                            ${CATEGORIAS.map(cat => `
+                                <div class="mb-2">
+                                    <label class="text-xs text-on-surface-variant font-medium">${cat.label}</label>
+                                    <select class="w-full px-2 py-1.5 text-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-white" 
+                                            id="cen-${cat.id}-${diaId}" 
+                                            data-dia="${diaId}" 
+                                            data-comida="cena" 
+                                            data-categoria="${cat.id}"
+                                            onchange="actualizarSeleccion('${diaId}', 'cena', '${cat.id}', this.value)">
+                                        <option value="">Seleccionar</option>
+                                        ${(datos[cat.id] || []).map(item => `<option value="${item.nombre}">${item.nombre}</option>`).join('')}
+                                    </select>
+                                </div>
+                            `).join('')}
                         </div>
                     </div>
                 </div>
@@ -284,11 +313,6 @@
         });
 
         container.innerHTML = html;
-
-        // Agregar eventos a los selects para actualizar el resumen
-        document.querySelectorAll('select').forEach(sel => {
-            sel.addEventListener('change', actualizarResumen);
-        });
 
         // Actualizar resumen inicial
         actualizarResumen();
@@ -312,8 +336,22 @@
             card.querySelectorAll('select').forEach(sel => {
                 sel.disabled = true;
                 sel.value = '';
+                // Limpiar selecciones guardadas
+                const dia = diaId;
+                const comida = sel.id.startsWith('alm') ? 'almuerzo' : 'cena';
+                const categoria = sel.dataset.categoria;
+                if (selecciones[dia] && selecciones[dia][comida]) {
+                    selecciones[dia][comida][categoria] = '';
+                }
             });
         }
+        actualizarResumen();
+    }
+
+    function actualizarSeleccion(diaId, comida, categoria, valor) {
+        if (!selecciones[diaId]) selecciones[diaId] = { almuerzo: {}, cena: {} };
+        if (!selecciones[diaId][comida]) selecciones[diaId][comida] = {};
+        selecciones[diaId][comida][categoria] = valor;
         actualizarResumen();
     }
 
@@ -331,26 +369,36 @@
             const chk = document.getElementById(`chk-${diaId}`);
             if (!chk || !chk.checked) return;
 
-            const almProteina = document.getElementById(`alm-${diaId}`)?.value || '';
-            const almBase = document.getElementById(`base-${diaId}`)?.value || '';
-            const cenProteina = document.getElementById(`cen-${diaId}`)?.value || '';
-            const cenTopping = document.getElementById(`top-${diaId}`)?.value || '';
+            const alm = selecciones[diaId]?.almuerzo || {};
+            const cen = selecciones[diaId]?.cena || {};
 
-            if (almProteina || almBase || cenProteina || cenTopping) {
+            // Verificar si hay al menos una selección en almuerzo o cena
+            const almCompleto = Object.values(alm).some(v => v !== '');
+            const cenCompleto = Object.values(cen).some(v => v !== '');
+
+            if (almCompleto || cenCompleto) {
                 tieneSelecciones = true;
                 html += `<div class="mt-2 pt-2 border-t border-outline-variant/20">`;
                 html += `<p class="font-bold text-primary text-sm">${dia}</p>`;
 
-                if (almProteina && almBase) {
-                    html += `<p class="text-xs text-on-surface-variant ml-2">🍽️ Almuerzo: ${almProteina} + ${almBase}</p>`;
-                } else if (almProteina || almBase) {
-                    html += `<p class="text-xs text-on-surface-variant ml-2">🍽️ Almuerzo: ${almProteina || '?'} + ${almBase || '?'} <span class="text-red-500">(incompleto)</span></p>`;
+                if (almCompleto) {
+                    html += `<div class="ml-2"><span class="text-xs font-semibold text-secondary">Almuerzo:</span>`;
+                    CATEGORIAS.forEach(cat => {
+                        if (alm[cat.id]) {
+                            html += `<span class="text-xs text-on-surface-variant block ml-2">${cat.label}: ${alm[cat.id]}</span>`;
+                        }
+                    });
+                    html += `</div>`;
                 }
 
-                if (cenProteina && cenTopping) {
-                    html += `<p class="text-xs text-on-surface-variant ml-2">🌙 Cena: ${cenProteina} + ${cenTopping}</p>`;
-                } else if (cenProteina || cenTopping) {
-                    html += `<p class="text-xs text-on-surface-variant ml-2">🌙 Cena: ${cenProteina || '?'} + ${cenTopping || '?'} <span class="text-red-500">(incompleto)</span></p>`;
+                if (cenCompleto) {
+                    html += `<div class="ml-2"><span class="text-xs font-semibold text-secondary">Cena:</span>`;
+                    CATEGORIAS.forEach(cat => {
+                        if (cen[cat.id]) {
+                            html += `<span class="text-xs text-on-surface-variant block ml-2">${cat.label}: ${cen[cat.id]}</span>`;
+                        }
+                    });
+                    html += `</div>`;
                 }
 
                 html += `</div>`;
@@ -376,40 +424,56 @@
 
         let mensaje = `UBICACIÓN: ${ubicacion.toUpperCase()}\n\n`;
         let tieneAlgo = false;
-        let incompletos = [];
+        let diasIncompletos = [];
 
         DIAS.forEach(dia => {
             const diaId = dia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             const chk = document.getElementById(`chk-${diaId}`);
             if (!chk || !chk.checked) return;
 
-            const almProteina = document.getElementById(`alm-${diaId}`)?.value || '';
-            const almBase = document.getElementById(`base-${diaId}`)?.value || '';
-            const cenProteina = document.getElementById(`cen-${diaId}`)?.value || '';
-            const cenTopping = document.getElementById(`top-${diaId}`)?.value || '';
+            const alm = selecciones[diaId]?.almuerzo || {};
+            const cen = selecciones[diaId]?.cena || {};
 
-            // Verificar que almuerzo y cena estén completos
-            if (almProteina && almBase && cenProteina && cenTopping) {
-                tieneAlgo = true;
-                mensaje += `*${dia}*\n\n`;
+            // Verificar si hay alguna selección en almuerzo o cena
+            const almCompleto = Object.values(alm).some(v => v !== '');
+            const cenCompleto = Object.values(cen).some(v => v !== '');
+
+            if (!almCompleto && !cenCompleto) {
+                diasIncompletos.push(dia);
+                return;
+            }
+
+            tieneAlgo = true;
+            mensaje += `*${dia}*\n\n`;
+
+            if (almCompleto) {
                 mensaje += `_almuerzo_\n`;
-                mensaje += `- *proteína*: ${almProteina}\n`;
-                mensaje += `- *base*: ${almBase}\n\n`;
+                CATEGORIAS.forEach(cat => {
+                    if (alm[cat.id]) {
+                        mensaje += `- *${cat.label.toLowerCase()}*: ${alm[cat.id]}\n`;
+                    }
+                });
+                mensaje += `\n`;
+            }
+
+            if (cenCompleto) {
                 mensaje += `_cena_\n`;
-                mensaje += `- *proteína*: ${cenProteina}\n`;
-                mensaje += `- *_topping_*: ${cenTopping}\n\n`;
-            } else {
-                incompletos.push(dia);
+                CATEGORIAS.forEach(cat => {
+                    if (cen[cat.id]) {
+                        mensaje += `- *${cat.label.toLowerCase()}*: ${cen[cat.id]}\n`;
+                    }
+                });
+                mensaje += `\n`;
             }
         });
 
-        if (incompletos.length > 0) {
-            alert(`Los siguientes días tienen opciones incompletas: ${incompletos.join(', ')}. Por favor, completa todas las selecciones.`);
+        if (diasIncompletos.length > 0) {
+            alert(`Los siguientes días no tienen selecciones completas: ${diasIncompletos.join(', ')}. Por favor, completa al menos una opción en almuerzo o cena.`);
             return;
         }
 
         if (!tieneAlgo) {
-            alert('Por favor, selecciona al menos un día y completa todas las opciones.');
+            alert('Por favor, selecciona al menos un día y completa las opciones.');
             return;
         }
 
