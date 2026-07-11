@@ -2,10 +2,10 @@
 <html class="light" lang="es">
 <head>
     <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0, user-scalable=yes" name="viewport"/>
-    <title>Snacktimepty | Arma tu Plan Personalizado</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Snacktimepty - Arma tu Plato</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Source+Sans+3:wght@400;600&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     <script>
         tailwind.config = {
@@ -13,136 +13,209 @@
             theme: {
                 extend: {
                     colors: {
-                        "on-secondary": "#ffffff","tertiary": "#501e00","on-surface": "#161d1f","surface": "#f4fafd","primary-fixed": "#afefdd","on-error": "#ffffff","surface-variant": "#dde4e6","secondary-container": "#e1e1c9","surface-container-high": "#e2e9ec","on-tertiary": "#ffffff","tertiary-container": "#742e00","on-primary-fixed-variant": "#065043","on-background": "#161d1f","surface-tint": "#29695b","on-surface-variant": "#3f4945","secondary": "#5e604d","secondary-fixed-dim": "#c8c8b0","surface-container-highest": "#dde4e6","on-error-container": "#93000a","on-secondary-fixed": "#1b1d0e","tertiary-fixed": "#ffdbcb","primary": "#00342b","brand-orange": "#388E3C","inverse-primary": "#94d3c1","primary-container": "#004d40","outline": "#707975","on-primary-fixed": "#00201a","outline-variant": "#bfc9c4","surface-container-low": "#eef5f7","surface-bright": "#f4fafd","on-primary": "#ffffff","secondary-fixed": "#e4e4cc","surface-dim": "#d4dbdd","error": "#ba1a1a","on-secondary-fixed-variant": "#474836","background": "#f4fafd","inverse-on-surface": "#ebf2f4","surface-container": "#e8eff1","on-tertiary-fixed": "#341100","tertiary-fixed-dim": "#ffb691","on-secondary-container": "#636451","inverse-surface": "#2b3234","on-tertiary-fixed-variant": "#793100","surface-container-lowest": "#ffffff","error-container": "#ffdad6","primary-fixed-dim": "#94d3c1","on-primary-container": "#7ebdac","on-tertiary-container": "#ff955d"
+                        "surface-variant": "#e8e1db",
+                        "secondary-fixed": "#b0f1cc",
+                        "on-primary-fixed-variant": "#274e3d",
+                        "on-tertiary-fixed-variant": "#474740",
+                        "on-secondary-container": "#327053",
+                        "secondary-container": "#b0f1cc",
+                        "tertiary-container": "#3c3c35",
+                        "outline": "#717973",
+                        "primary-container": "#1b4332",
+                        "surface-tint": "#3f6653",
+                        "primary-fixed": "#c1ecd4",
+                        "outline-variant": "#c1c8c2",
+                        "on-tertiary-container": "#a8a69d",
+                        "surface-bright": "#fff8f2",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#414844",
+                        "surface-container-low": "#f9f2ec",
+                        "on-surface": "#1d1b18",
+                        "tertiary-fixed": "#e5e2d9",
+                        "on-secondary-fixed-variant": "#0c5136",
+                        "on-primary-container": "#86af99",
+                        "inverse-on-surface": "#f6f0ea",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#33302c",
+                        "surface-container-highest": "#e8e1db",
+                        "on-background": "#1d1b18",
+                        "on-tertiary-fixed": "#1c1c16",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#a5d0b9",
+                        "primary": "#012d1d",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#94d4b1",
+                        "error-container": "#ffdad6",
+                        "background": "#fff8f2",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed-dim": "#c9c7bd",
+                        "secondary": "#2b694d",
+                        "on-primary-fixed": "#002114",
+                        "tertiary": "#262620",
+                        "on-error": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-dim": "#dfd9d3",
+                        "on-secondary-fixed": "#002113",
+                        "surface-container-high": "#ede7e1",
+                        "inverse-primary": "#a5d0b9",
+                        "surface": "#fff8f2",
+                        "surface-container": "#f3ede7"
                     },
                     borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
-                    spacing: { "margin-mobile": "16px","margin-desktop": "64px","container-max": "1200px", base: "8px", gutter: "24px" },
-                    fontFamily: { "headline-lg": ["Libre Caslon Text"],"label-sm": ["Plus Jakarta Sans"],"body-md": ["Plus Jakarta Sans"],"headline-lg-mobile": ["Libre Caslon Text"],"display-lg": ["Libre Caslon Text"] },
-                    fontSize: { "headline-lg": ["32px", {"lineHeight": "40px","fontWeight": "600"}],"label-sm": ["12px", {"lineHeight": "16px","letterSpacing": "0.05em","fontWeight": "600"}],"body-md": ["16px", {"lineHeight": "24px","fontWeight": "400"}],"headline-lg-mobile": ["28px", {"lineHeight": "36px","fontWeight": "600"}],"display-lg": ["48px", {"lineHeight": "56px","letterSpacing": "-0.02em","fontWeight": "700"}] }
+                    spacing: { gutter: "24px", "margin-desktop": "64px", lg: "48px", base: "8px", md: "24px", sm: "12px", xl: "80px", "margin-mobile": "16px", xs: "4px" },
+                    fontFamily: {
+                        "label-md": ["Manrope"],
+                        "display-lg": ["Manrope"],
+                        "body-md": ["\"Source Sans 3\""],
+                        "label-sm": ["Manrope"],
+                        "headline-md": ["Manrope"],
+                        "body-lg": ["\"Source Sans 3\""],
+                        "display-lg-mobile": ["Manrope"]
+                    },
+                    fontSize: {
+                        "label-md": ["14px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "600" }],
+                        "display-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "500" }],
+                        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+                        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+                        "display-lg-mobile": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "700" }]
+                    }
                 }
             }
         }
     </script>
     <style>
-        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-        .meal-card-shadow { box-shadow: 0 10px 30px -10px rgba(0, 52, 43, 0.1); }
-        .orange-glow:hover { box-shadow: 0 4px 20px rgba(255, 130, 58, 0.4); }
-        .selected-item { border-color: #388E3C !important; background-color: #f0fdf4 !important; }
-        .badge-48h {
-            background-color: #dc2626;
-            color: white;
-            font-size: 0.65rem;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 9999px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: inline-block;
-            animation: pulse-badge 1.5s infinite;
-        }
-        @keyframes pulse-badge {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(0.95); }
-            100% { opacity: 1; transform: scale(1); }
-        }
+        body { background-color: #fff8f2; color: #1d1b18; -webkit-font-smoothing: antialiased; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+        .botanical-card { background-color: #ffffff; border: 1px solid rgba(1, 45, 29, 0.1); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        input[type="radio"] { accent-color: #2b694d; }
+        .selected-radio:checked + span { font-weight: 600; }
     </style>
 </head>
-<body class="overflow-x-hidden bg-surface font-body-md text-on-surface">
+<body class="font-body-md text-body-md min-h-screen flex flex-col">
 
-<header class="bg-surface dark:bg-inverse-surface fixed top-0 w-full z-[100]">
-    <nav class="flex justify-between items-center px-4 md:px-16 py-4 w-full max-w-container-max mx-auto">
-        <div class="font-headline-lg text-headline-lg font-bold text-primary dark:text-inverse-primary flex items-center gap-2">
-            <img alt="Snacktimepty Logo" class="h-10 w-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJfELIP2KZlMhze1lFWu8AFjGFxQc9uzVgiXvf9-5exYBVRhUPKMjPn-X5lcpjdjRC2DiSFwe7T5PQCqFzEPOUqAvlir6heAj0hOGX3ScrhfOMSSH8Foo8PLyGePoMZ2m_s_SXb1TrRMxsWMwSSX132u3DrpzHvHKCH9ywHk7FZAzmldoKjPqXekbYBjbz2nTZqMKnWR2KZ54V47wFlxAzwAyACPvPWX3-xymUrPPk0l2IDSRUbAvtTIM-8Ax-zposEFYesmExKtj9"/>
-            <span class="hidden md:inline">Snacktimepty</span>
-        </div>
-        <div class="hidden md:flex items-center gap-8">
-            <a class="text-primary dark:text-inverse-primary border-b-2 border-primary dark:border-inverse-primary pb-1 font-label-sm text-label-sm" href="#inicio">Inicio</a>
-            <a class="text-on-surface-variant dark:text-outline-variant font-label-sm text-label-sm hover:text-primary" href="#selector">Arma tu Plan</a>
-            <a class="text-on-surface-variant dark:text-outline-variant font-label-sm text-label-sm hover:text-primary" href="https://snacktimepty1-hue.github.io/snackpty/#meal-plan">Planes</a>
-            <a class="text-on-surface-variant dark:text-outline-variant font-label-sm text-label-sm hover:text-primary" href="https://snacktimepty1-hue.github.io/snackpty/#meal-prep">Meal Prep</a>
-        </div>
-        <a href="https://wa.me/50766646198" target="_blank" class="bg-[#388E3C] text-white px-6 py-2.5 rounded-full font-label-sm text-label-sm font-bold orange-glow transition-all active:scale-95">Contactar</a>
-    </nav>
+<!-- Top Navigation Bar con logo Snacktimepty -->
+<header class="w-full top-0 sticky z-40 bg-surface/80 backdrop-blur-md px-margin-mobile h-16 flex items-center justify-between border-b border-outline-variant/30">
+    <button class="flex items-center gap-2 text-primary hover:opacity-70 transition-opacity active:scale-95" onclick="history.back()">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span class="font-label-md text-label-md">Volver</span>
+    </button>
+    <div class="flex items-center gap-2">
+        <img alt="Snacktimepty Logo" class="h-8 w-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJfELIP2KZlMhze1lFWu8AFjGFxQc9uzVgiXvf9-5exYBVRhUPKMjPn-X5lcpjdjRC2DiSFwe7T5PQCqFzEPOUqAvlir6heAj0hOGX3ScrhfOMSSH8Foo8PLyGePoMZ2m_s_SXb1TrRMxsWMwSSX132u3DrpzHvHKCH9ywHk7FZAzmldoKjPqXekbYBjbz2nTZqMKnWR2KZ54V47wFlxAzwAyACPvPWX3-xymUrPPk0l2IDSRUbAvtTIM-8Ax-zposEFYesmExKtj9"/>
+        <span class="font-bold text-headline-md text-primary hidden sm:inline">Snacktimepty</span>
+    </div>
+    <div class="w-8"></div>
 </header>
 
-<main class="pt-20">
-    <!-- Hero -->
-    <section class="relative w-full overflow-hidden py-12 md:py-16 px-4 md:px-16 bg-surface" id="inicio">
-        <div class="max-w-container-max mx-auto text-center">
-            <h1 class="font-display-lg text-[42px] md:text-display-lg leading-tight text-primary">Arma tu Plan Personalizado</h1>
-            <p class="text-on-surface-variant text-lg max-w-2xl mx-auto mt-4">Elige tu proteína, carbohidrato, ensalada y toppings. Tú decides cómo quieres tu comida.</p>
-            <div class="mt-4">
-                <span class="badge-48h">Requiere 48 hrs de anticipación</span>
-            </div>
-        </div>
+<main class="flex-grow w-full max-w-4xl mx-auto px-margin-mobile py-lg">
+    <!-- Main Headline -->
+    <section class="mb-lg text-center md:text-left">
+        <h1 class="font-headline-md text-headline-md md:text-display-lg md:font-display-lg text-primary mb-sm">Arma tu Plato</h1>
+        <p class="text-on-surface-variant max-w-xl">Elige tus ingredientes y cuéntanos dónde entregarlo.</p>
     </section>
 
-    <!-- Selector de Plan -->
-    <section class="py-8 px-4 md:px-16 bg-surface-container-lowest" id="selector">
-        <div class="max-w-container-max mx-auto">
-
-            <!-- Barra de progreso / resumen flotante -->
-            <div id="resumen-flotante" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[95%] sm:w-[90%] max-w-3xl bg-[#00342b] text-white p-4 rounded-2xl shadow-2xl z-[200] transition-all duration-300 transform translate-y-20 opacity-0 pointer-events-none border border-[#388E3C]/30 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div class="flex flex-col">
-                    <span class="text-xs text-[#94d3c1] font-bold uppercase tracking-wider" id="resumen-items">0 selecciones</span>
-                    <span class="text-xl font-bold text-white" id="resumen-total">Total: $0.00</span>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+        <!-- Left Column: Selection Form -->
+        <div class="lg:col-span-7 space-y-gutter">
+            <div class="botanical-card rounded-xl p-md" id="selector-container">
+                <h2 class="font-label-md text-label-md text-secondary uppercase tracking-widest mb-md border-b border-outline-variant/20 pb-xs">Selecciona tus Ingredientes</h2>
+                <div id="categorias-container">
+                    <!-- Aquí se cargarán dinámicamente las categorías -->
+                    <p class="text-center text-on-surface-variant animate-pulse py-8">Cargando opciones...</p>
                 </div>
-                <button onclick="enviarPedidoPersonalizado()" class="bg-[#388E3C] hover:bg-[#388E3C]/90 text-white px-5 py-3 rounded-xl font-bold text-sm transition-all active:scale-95 flex items-center gap-2 shadow-md">
-                    <span class="material-symbols-outlined text-sm">shopping_cart_checkout</span>Enviar a WhatsApp
-                </button>
             </div>
 
-            <!-- Las secciones se cargarán dinámicamente -->
-            <div id="constructor-container" class="space-y-12">
-                <p class="text-center text-on-surface-variant animate-pulse">Cargando opciones...</p>
+            <!-- Atmospheric Section -->
+            <div class="p-md bg-surface-container-low rounded-xl border border-outline-variant/20 flex items-start gap-md">
+                <div class="p-sm bg-primary-container text-on-primary-container rounded-full shrink-0">
+                    <span class="material-symbols-outlined">eco</span>
+                </div>
+                <div>
+                    <h3 class="font-label-md text-label-md text-primary">Compromiso Snacktime</h3>
+                    <p class="text-body-md text-on-surface-variant mt-xs">Ingredientes locales y empaques 100% compostables para una nutrición consciente.</p>
+                </div>
             </div>
-
         </div>
-    </section>
 
-    <!-- Botón para volver a la página principal -->
-    <section class="py-8 px-4 md:px-16 bg-surface">
-        <div class="max-w-container-max mx-auto text-center">
-            <a href="https://snacktimepty1-hue.github.io/snackpty/" class="inline-flex items-center gap-2 text-primary font-bold hover:text-brand-orange transition-all">
-                <span class="material-symbols-outlined">arrow_back</span> Volver a la página principal
-            </a>
+        <!-- Right Column: Delivery Form -->
+        <div class="lg:col-span-5">
+            <div class="botanical-card rounded-xl p-md sticky top-24">
+                <h2 class="font-label-md text-label-md text-primary mb-md">Información de Entrega</h2>
+                <form class="space-y-md" id="checkout-form">
+                    <div>
+                        <label class="block text-label-sm font-bold text-on-surface mb-xs" for="full-name">Nombre Completo</label>
+                        <input class="w-full px-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:opacity-50 text-body-md" id="full-name" placeholder="Ej. Mariana González" required="" type="text"/>
+                    </div>
+                    <div>
+                        <label class="block text-label-sm font-bold text-on-surface mb-xs" for="address">Dirección de Entrega</label>
+                        <textarea class="w-full px-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:opacity-50 text-body-md resize-none" id="address" placeholder="Calle, edificio, número de apto..." required="" rows="3"></textarea>
+                    </div>
+                    <button class="w-full mt-lg flex items-center justify-center gap-md bg-[#25D366] text-white py-lg rounded-xl font-label-md text-headline-md hover:brightness-105 active:scale-[0.98] transition-all shadow-md" type="submit">
+                        <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24">
+                            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.539 2.016 2.126-.54c1.079.59 1.987.914 3.16.915 3.18 0 5.765-2.587 5.767-5.767 0-3.18-2.585-5.777-5.765-5.777zm3.387 8.192c-.159.43-.914.811-1.27.832-.36.02-.707.164-2.316-.464-1.61-.631-2.613-2.274-2.693-2.381-.08-.108-.656-.874-.656-1.665 0-.791.408-1.177.552-1.345.144-.17.315-.213.421-.213.106 0 .212.001.304.005.101.005.237-.038.37.284.133.327.456 1.114.495 1.194.039.081.065.174.011.285-.054.11-.081.18-.163.272-.081.092-.17.205-.243.275-.081.08-.166.167-.07.33.095.163.424.698.91 1.132.625.556 1.151.728 1.314.81.163.08.261.068.358-.043.098-.111.417-.484.529-.65.112-.165.223-.138.376-.08.152.058.97.457 1.137.54.167.083.277.124.318.196.04.072.04.417-.118.847z"/>
+                        </svg>
+                        Enviar Pedido por WhatsApp
+                    </button>
+                    <p class="text-center text-label-sm text-on-surface-variant/60 pt-sm">Serás redirigido a WhatsApp para confirmar los detalles finales.</p>
+                </form>
+            </div>
         </div>
-    </section>
+    </div>
 </main>
 
-<footer class="bg-surface-container dark:bg-surface-container-highest">
-    <div class="flex flex-col md:flex-row justify-between items-start px-4 md:px-16 py-12 w-full max-w-container-max mx-auto gap-8">
-        <div class="space-y-4"><div class="font-headline-lg text-headline-lg text-primary dark:text-inverse-primary font-bold">Snacktimepty</div><p class="text-on-surface-variant max-w-xs font-body-md">Llevando la alta cocina saludable a la puerta de tu hogar en Panamá.</p></div>
-        <div class="grid grid-cols-2 gap-8"><div><h4 class="font-bold text-primary uppercase text-xs tracking-widest">Navegación</h4><ul class="space-y-2"><li><a class="text-on-surface-variant hover:text-[#388E3C]" href="#inicio">Inicio</a></li><li><a class="text-on-surface-variant hover:text-[#388E3C]" href="#selector">Arma tu Plan</a></li><li><a class="text-on-surface-variant hover:text-[#388E3C]" href="https://snacktimepty1-hue.github.io/snackpty/#meal-plan">Planes</a></li><li><a class="text-on-surface-variant hover:text-[#388E3C]" href="https://snacktimepty1-hue.github.io/snackpty/#meal-prep">Meal Prep</a></li></ul></div><div><h4 class="font-bold text-primary uppercase text-xs tracking-widest">Contacto</h4><ul class="space-y-2"><li class="text-on-surface-variant flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">phone</span> 6664-6198</li><li class="text-on-surface-variant flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">location_on</span> Ciudad de Panamá</li></ul></div></div>
+<!-- Success Overlay -->
+<div class="fixed inset-0 bg-primary/40 backdrop-blur-sm z-[100] flex items-center justify-center p-md hidden" id="success-overlay">
+    <div class="bg-surface p-xl rounded-2xl max-w-sm w-full text-center shadow-xl">
+        <div class="w-16 h-16 bg-secondary-container text-on-secondary-container rounded-full flex items-center justify-center mx-auto mb-md">
+            <span class="material-symbols-outlined text-[40px]">task_alt</span>
+        </div>
+        <h3 class="font-headline-md text-headline-md text-primary mb-sm">¡Listo para enviar!</h3>
+        <p class="text-body-md text-on-surface-variant mb-lg">Estamos preparando tu mensaje de WhatsApp con tu selección.</p>
+        <div class="animate-pulse flex space-x-2 justify-center">
+            <div class="h-2 w-2 bg-secondary rounded-full"></div>
+            <div class="h-2 w-2 bg-secondary rounded-full"></div>
+            <div class="h-2 w-2 bg-secondary rounded-full"></div>
+        </div>
     </div>
-    <div class="border-t border-outline-variant/30 py-6 px-4 md:px-16"><div class="max-w-container-max mx-auto text-center md:text-left text-on-surface-variant font-label-sm text-label-sm">© 2024 Snacktimepty by Chef Glory. Todos los derechos reservados.</div></div>
+</div>
+
+<footer class="mt-xl pb-lg border-t border-outline-variant/20 bg-surface-container-low pt-lg">
+    <div class="max-w-4xl mx-auto px-margin-mobile text-center">
+        <div class="flex items-center justify-center gap-2 mb-sm">
+            <img alt="Snacktimepty Logo" class="h-6 w-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJfELIP2KZlMhze1lFWu8AFjGFxQc9uzVgiXvf9-5exYBVRhUPKMjPn-X5lcpjdjRC2DiSFwe7T5PQCqFzEPOUqAvlir6heAj0hOGX3ScrhfOMSSH8Foo8PLyGePoMZ2m_s_SXb1TrRMxsWMwSSX132u3DrpzHvHKCH9ywHk7FZAzmldoKjPqXekbYBjbz2nTZqMKnWR2KZ54V47wFlxAzwAyACPvPWX3-xymUrPPk0l2IDSRUbAvtTIM-8Ax-zposEFYesmExKtj9"/>
+            <span class="text-primary opacity-50 font-semibold">Snacktimepty</span>
+        </div>
+        <p class="text-label-sm text-on-surface-variant">© 2024 Nutrición Consciente. Hecho con amor en Panamá.</p>
+    </div>
 </footer>
 
 <script>
     // ============================================================
-    // CONFIGURACIÓN
+    // CONFIGURACIÓN - URL del Web App
     // ============================================================
     const NUMERO_WHATSAPP = "50766646198";
-    const URL_API_PRICES = "https://script.google.com/macros/s/AKfycbz1MZywc7rx0JA6Rs6-TId6s6yZyDQ_T1KRU9uS8_GDKYhOCwqdQpGTJ8ypaI7OGS_g/exec";
+    const URL_API = "https://script.google.com/macros/s/AKfycbxgBkS4EVEBUwYyPpEDYeVir8G5gvoOlH6kmmcQZFRbp_dCCkjuxv_o5V94-SlYgnwCzg/exec";
 
-    // Categorías y sus configuraciones: nombre, límite de selección (0 = sin límite), descripción
-    const categoriasConfig = {
-        "Proteinas": { label: "🥩 Elige tu Proteína (3 opciones)", max: 1, min: 1, desc: "Selecciona una proteína" },
-        "Carbohidratos": { label: "🍚 Elige tu Carbohidrato del día (1 opción)", max: 1, min: 1, desc: "Selecciona un carbohidrato" },
-        "BasesKeto": { label: "🥦 Elige tu Base Keto (1 opción)", max: 1, min: 1, desc: "Selecciona una base keto" },
-        "Ensaladas": { label: "🥗 Elige tu Ensalada (1 taza - 1½ tazas)", max: 1, min: 1, desc: "Selecciona una ensalada" },
-        "Toppings": { label: "🧂 Elige tus Toppings (máximo 2 para Keto)", max: 2, min: 0, desc: "Para almuerzos y cenas Keto, puedes elegir hasta 2 toppings" }
-    };
+    // Categorías que se cargarán desde la hoja (deben coincidir con los nombres de las pestañas)
+    const categorias = [
+        { id: 'Proteinas', label: '🥩 Proteínas' },
+        { id: 'Carbohidratos', label: '🍚 Carbohidratos' },
+        { id: 'Ensaladas', label: '🥗 Ensaladas' },
+        { id: 'Toppings', label: '🧂 Toppings' },
+        { id: 'Bases', label: '🥔 Bases' },
+        { id: 'Acompanamientos', label: '🌽 Acompañamientos' },
+        { id: 'GrasasSaludables', label: '🥑 Grasas Saludables' }
+    ];
 
-    // Almacenar selecciones
-    let selecciones = {};
+    let selecciones = {}; // Guardará lo seleccionado por el usuario
 
     // ============================================================
-    // FUNCIONES PARA OBTENER DATOS DESDE APPS SCRIPT
+    // FUNCIONES PARA OBTENER DATOS
     // ============================================================
     async function fetchData(tipo) {
         try {
-            const resp = await fetch(`${URL_API_PRICES}?tipo=${tipo}`);
+            const resp = await fetch(`${URL_API}?tipo=${tipo}`);
             const json = await resp.json();
             if (json.status === 'success') {
                 return json.data;
@@ -159,244 +232,111 @@
     // ============================================================
     // CARGAR TODAS LAS CATEGORÍAS
     // ============================================================
-    async function cargarConstructor() {
-        const container = document.getElementById('constructor-container');
-        container.innerHTML = '<p class="text-center text-on-surface-variant animate-pulse">Cargando opciones...</p>';
+    async function cargarCategorias() {
+        const container = document.getElementById('categorias-container');
+        container.innerHTML = '<p class="text-center text-on-surface-variant animate-pulse py-8">Cargando opciones...</p>';
 
-        // Obtener datos de todas las categorías en paralelo
-        const categorias = Object.keys(categoriasConfig);
-        const promises = categorias.map(cat => fetchData(cat));
+        // Obtener todas las categorías en paralelo
+        const promises = categorias.map(cat => fetchData(cat.id));
         const resultados = await Promise.all(promises);
 
-        // Inicializar selecciones
-        categorias.forEach((cat, idx) => {
-            selecciones[cat] = { items: [], data: resultados[idx] || [] };
-        });
-
-        // Generar HTML
         let html = '';
+
         categorias.forEach((cat, idx) => {
-            const config = categoriasConfig[cat];
             const items = resultados[idx] || [];
             if (items.length === 0) return;
 
+            // Inicializar selección para esta categoría
+            selecciones[cat.id] = null;
+
             html += `
-            <div class="bg-white rounded-3xl p-6 md:p-8 meal-card-shadow border border-outline-variant/20">
-                <div class="flex flex-wrap items-center justify-between mb-4 gap-2">
-                    <h3 class="font-headline-lg text-2xl text-primary">${config.label}</h3>
-                    <span class="text-sm text-on-surface-variant">${config.desc}</span>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="categoria-${cat}">
+            <div class="mb-lg">
+                <h3 class="font-label-sm text-label-sm text-primary/60 uppercase tracking-wider mb-sm">${cat.label}</h3>
+                <div class="space-y-sm" id="categoria-${cat.id}">
                     ${items.map(item => `
-                        <div class="border border-outline-variant/30 rounded-2xl p-4 transition-all hover:border-primary/50 cursor-pointer seleccionable" 
-                             data-categoria="${cat}" 
-                             data-id="${item.id}" 
-                             data-nombre="${item.nombre}" 
-                             data-precio="${parseFloat(item.precio) || 0}"
-                             onclick="toggleSeleccion('${cat}', '${item.id}', '${item.nombre}', ${parseFloat(item.precio) || 0})">
-                            <div class="flex justify-between items-start">
-                                <h4 class="font-bold text-primary text-lg">${item.nombre}</h4>
-                                <span class="font-bold text-primary text-md">$${(parseFloat(item.precio) || 0).toFixed(2)}</span>
-                            </div>
-                            ${item.descripcion ? `<p class="text-sm text-on-surface-variant mt-1">${item.descripcion}</p>` : ''}
-                            <div class="mt-3 flex items-center justify-end gap-2">
-                                <button onclick="event.stopPropagation(); modificarCantidad('${cat}', '${item.id}', -1)" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-outline-variant/30 text-primary font-bold transition-all active:scale-75 select-none border border-outline/20">
-                                    <span class="material-symbols-outlined text-base">remove</span>
-                                </button>
-                                <span id="qty-${cat}-${item.id}" class="w-6 text-center font-bold text-primary text-base select-none">0</span>
-                                <button onclick="event.stopPropagation(); modificarCantidad('${cat}', '${item.id}', 1)" class="w-8 h-8 rounded-full bg-[#388E3C] flex items-center justify-center hover:bg-[#388E3C]/90 text-white font-bold transition-all active:scale-75 select-none">
-                                    <span class="material-symbols-outlined text-base">add</span>
-                                </button>
-                            </div>
-                        </div>
+                        <label class="flex items-center gap-md p-sm rounded-lg hover:bg-surface-container-low cursor-pointer transition-colors border border-transparent hover:border-outline-variant/30">
+                            <input class="w-5 h-5" type="radio" name="${cat.id}" value="${item.nombre}" data-id="${item.id}" onchange="actualizarSeleccion('${cat.id}', '${item.nombre}')">
+                            <span class="text-body-md text-on-surface">${item.nombre}</span>
+                            ${item.descripcion ? `<span class="text-sm text-on-surface-variant/60 ml-auto">${item.descripcion}</span>` : ''}
+                        </label>
                     `).join('')}
                 </div>
-                <div class="mt-4 text-sm text-on-surface-variant">
-                    <span id="resumen-${cat}">Seleccionados: 0</span>
-                </div>
-            </div>
-            `;
+            </div>`;
         });
 
         container.innerHTML = html;
-
-        // Inicializar contadores de selección
-        categorias.forEach(cat => {
-            actualizarResumenCategoria(cat);
-        });
-
-        actualizarBarraTotal();
     }
 
     // ============================================================
-    // FUNCIONES DE SELECCIÓN
+    // ACTUALIZAR SELECCIÓN
     // ============================================================
-    function toggleSeleccion(categoria, id, nombre, precio) {
-        // Encontrar el elemento en la selección
-        const seleccionActual = selecciones[categoria].items;
-        const index = seleccionActual.findIndex(item => item.id === id);
-        const config = categoriasConfig[categoria];
-
-        if (index !== -1) {
-            // Si ya está seleccionado, lo quitamos
-            seleccionActual.splice(index, 1);
-        } else {
-            // Si no está seleccionado, verificamos límite
-            if (config.max > 0 && seleccionActual.length >= config.max) {
-                alert(`Solo puedes seleccionar hasta ${config.max} ${config.max === 1 ? 'opción' : 'opciones'} en esta categoría.`);
-                return;
-            }
-            seleccionActual.push({ id, nombre, precio });
-        }
-
-        // Actualizar la cantidad en el contador visual
-        const cantidad = seleccionActual.filter(item => item.id === id).length;
-        const qtySpan = document.getElementById(`qty-${categoria}-${id}`);
-        if (qtySpan) qtySpan.innerText = cantidad;
-
-        // Resaltar tarjeta
-        const card = document.querySelector(`.seleccionable[data-categoria="${categoria}"][data-id="${id}"]`);
-        if (card) {
-            if (cantidad > 0) {
-                card.classList.add('selected-item');
-            } else {
-                card.classList.remove('selected-item');
-            }
-        }
-
-        // Actualizar resumen de categoría
-        actualizarResumenCategoria(categoria);
-        actualizarBarraTotal();
-    }
-
-    function modificarCantidad(categoria, id, delta) {
-        const seleccionActual = selecciones[categoria].items;
-        const index = seleccionActual.findIndex(item => item.id === id);
-        const config = categoriasConfig[categoria];
-
-        if (delta > 0) {
-            // Aumentar
-            if (config.max > 0 && seleccionActual.length >= config.max) {
-                alert(`Solo puedes seleccionar hasta ${config.max} ${config.max === 1 ? 'opción' : 'opciones'} en esta categoría.`);
-                return;
-            }
-            // Buscar el item en los datos para obtener nombre y precio
-            const dataItem = selecciones[categoria].data.find(d => d.id === id);
-            if (!dataItem) return;
-            seleccionActual.push({ id, nombre: dataItem.nombre, precio: parseFloat(dataItem.precio) || 0 });
-        } else {
-            // Disminuir
-            if (index !== -1) {
-                seleccionActual.splice(index, 1);
-            } else {
-                return;
-            }
-        }
-
-        // Actualizar contador visual
-        const cantidad = seleccionActual.filter(item => item.id === id).length;
-        const qtySpan = document.getElementById(`qty-${categoria}-${id}`);
-        if (qtySpan) qtySpan.innerText = cantidad;
-
-        // Resaltar tarjeta
-        const card = document.querySelector(`.seleccionable[data-categoria="${categoria}"][data-id="${id}"]`);
-        if (card) {
-            if (cantidad > 0) {
-                card.classList.add('selected-item');
-            } else {
-                card.classList.remove('selected-item');
-            }
-        }
-
-        // Actualizar resumen de categoría
-        actualizarResumenCategoria(categoria);
-        actualizarBarraTotal();
-    }
-
-    function actualizarResumenCategoria(categoria) {
-        const items = selecciones[categoria].items;
-        const total = items.length;
-        const span = document.getElementById(`resumen-${categoria}`);
-        if (span) {
-            const nombres = items.map(i => i.nombre).join(', ');
-            span.innerText = `Seleccionados: ${total} ${nombres ? ' - ' + nombres : ''}`;
-        }
-    }
-
-    function actualizarBarraTotal() {
-        let totalItems = 0;
-        let precioTotal = 0;
-        let resumenTexto = '';
-
-        for (let cat in selecciones) {
-            const items = selecciones[cat].items;
-            items.forEach(item => {
-                totalItems += 1;
-                precioTotal += item.precio;
-            });
-            if (items.length > 0) {
-                const nombres = items.map(i => i.nombre).join(', ');
-                resumenTexto += `${categoriasConfig[cat].label.replace(/^[^\s]+\s/, '')}: ${nombres}\n`;
-            }
-        }
-
-        const barra = document.getElementById('resumen-flotante');
-        const itemsSpan = document.getElementById('resumen-items');
-        const totalSpan = document.getElementById('resumen-total');
-
-        if (barra && itemsSpan && totalSpan) {
-            if (totalItems > 0) {
-                itemsSpan.innerText = `${totalItems} ${totalItems === 1 ? 'selección' : 'selecciones'}`;
-                totalSpan.innerText = `Total: $${precioTotal.toFixed(2)}`;
-                barra.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
-            } else {
-                barra.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
-            }
-        }
-
-        // Guardar resumen para enviar
-        window.resumenPedido = {
-            items: resumenTexto,
-            total: precioTotal,
-            totalItems: totalItems
-        };
+    function actualizarSeleccion(categoria, nombre) {
+        selecciones[categoria] = nombre;
     }
 
     // ============================================================
     // ENVIAR PEDIDO A WHATSAPP
     // ============================================================
-    function enviarPedidoPersonalizado() {
-        const resumen = window.resumenPedido;
-        if (!resumen || resumen.totalItems === 0) {
-            alert('Por favor selecciona al menos una opción para armar tu plan.');
-            return;
+    function enviarPedido() {
+        const name = document.getElementById('full-name').value;
+        const address = document.getElementById('address').value;
+
+        if (!name || !address) {
+            alert('Por favor, completa tus datos para continuar.');
+            return false;
         }
 
-        // Verificar que las categorías con mínimo 1 tengan al menos una selección
+        // Verificar que todas las categorías tengan selección
         let faltantes = [];
-        for (let cat in categoriasConfig) {
-            const config = categoriasConfig[cat];
-            if (config.min > 0 && selecciones[cat].items.length < config.min) {
-                faltantes.push(config.label);
+        for (let cat in selecciones) {
+            if (selecciones[cat] === null) {
+                const label = categorias.find(c => c.id === cat);
+                if (label) faltantes.push(label.label);
             }
         }
+
         if (faltantes.length > 0) {
-            alert(`Faltan selecciones en: ${faltantes.join(', ')}. Por favor completa tu plan.`);
-            return;
+            alert(`Por favor selecciona: ${faltantes.join(', ')}`);
+            return false;
         }
 
-        let mensaje = "Hola Chef Glory! 🌱\n\nMe gustaría armar mi plan personalizado (requiere 48 hrs de anticipación):\n\n";
-        mensaje += resumen.items;
-        mensaje += `\n💰 *Total Estimado:* $${resumen.total.toFixed(2)}\n\n¿Me confirman disponibilidad y los siguientes pasos? 😊🍱`;
+        // Construir mensaje
+        let mensaje = "¡Hola Snacktimepty! 🌱\n\nMe gustaría armar mi plato con los siguientes ingredientes:\n\n";
+        for (let cat in selecciones) {
+            const label = categorias.find(c => c.id === cat);
+            if (label) {
+                mensaje += `• ${label.label.replace(/^[^\s]+\s/, '')}: ${selecciones[cat]}\n`;
+            }
+        }
+        mensaje += `\n📦 *Datos de entrega:*\n• Nombre: ${name}\n• Dirección: ${address}\n\n¿Me confirman disponibilidad? 😊🍱`;
 
-        window.open(`https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensaje)}`, '_blank');
+        // Mostrar overlay de éxito
+        const overlay = document.getElementById('success-overlay');
+        overlay.classList.remove('hidden');
+        overlay.classList.add('flex');
+
+        // Redirigir a WhatsApp después de 2 segundos
+        setTimeout(() => {
+            const encoded = encodeURIComponent(mensaje);
+            window.open(`https://wa.me/${NUMERO_WHATSAPP}?text=${encoded}`, '_blank');
+            overlay.classList.add('hidden');
+            overlay.classList.remove('flex');
+        }, 2000);
+
+        return false;
     }
 
     // ============================================================
     // INICIALIZAR
     // ============================================================
     document.addEventListener('DOMContentLoaded', function() {
-        cargarConstructor();
+        cargarCategorias();
+
+        // Asignar evento al formulario
+        document.getElementById('checkout-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            enviarPedido();
+        });
     });
 </script>
 </body>
