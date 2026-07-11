@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Snacktimepty - Arma tu Plato</title>
+    <title>Snacktimepty - Arma tu Menú Semanal</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Source+Sans+3:wght@400;600&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -89,13 +89,17 @@
         body { background-color: #fff8f2; color: #1d1b18; -webkit-font-smoothing: antialiased; }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
         .botanical-card { background-color: #ffffff; border: 1px solid rgba(1, 45, 29, 0.1); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        input[type="radio"] { accent-color: #2b694d; }
-        .selected-radio:checked + span { font-weight: 600; }
+        input[type="radio"], input[type="checkbox"] { accent-color: #2b694d; }
+        .day-card { border-left: 4px solid transparent; transition: all 0.3s ease; }
+        .day-card.active { border-left-color: #2b694d; background-color: #f0fdf4; }
+        .day-card.inactive { opacity: 0.6; }
+        .day-card.inactive select { opacity: 0.6; pointer-events: none; }
+        .day-card.inactive .day-label { opacity: 0.6; }
     </style>
 </head>
 <body class="font-body-md text-body-md min-h-screen flex flex-col">
 
-<!-- Top Navigation Bar con logo Snacktimepty -->
+<!-- Top Navigation Bar -->
 <header class="w-full top-0 sticky z-40 bg-surface/80 backdrop-blur-md px-margin-mobile h-16 flex items-center justify-between border-b border-outline-variant/30">
     <button class="flex items-center gap-2 text-primary hover:opacity-70 transition-opacity active:scale-95" onclick="history.back()">
         <span class="material-symbols-outlined">arrow_back</span>
@@ -108,25 +112,33 @@
     <div class="w-8"></div>
 </header>
 
-<main class="flex-grow w-full max-w-4xl mx-auto px-margin-mobile py-lg">
-    <!-- Main Headline -->
+<main class="flex-grow w-full max-w-5xl mx-auto px-margin-mobile py-lg">
+    <!-- Headline -->
     <section class="mb-lg text-center md:text-left">
-        <h1 class="font-headline-md text-headline-md md:text-display-lg md:font-display-lg text-primary mb-sm">Arma tu Plato</h1>
-        <p class="text-on-surface-variant max-w-xl">Elige tus ingredientes y cuéntanos dónde entregarlo.</p>
+        <h1 class="font-headline-md text-headline-md md:text-display-lg md:font-display-lg text-primary mb-sm">Arma tu Menú Semanal</h1>
+        <p class="text-on-surface-variant max-w-xl">Selecciona los días que deseas pedir y elige tus proteínas, bases y toppings.</p>
     </section>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
-        <!-- Left Column: Selection Form -->
+        <!-- Left Column: Selección de días y comidas -->
         <div class="lg:col-span-7 space-y-gutter">
-            <div class="botanical-card rounded-xl p-md" id="selector-container">
-                <h2 class="font-label-md text-label-md text-secondary uppercase tracking-widest mb-md border-b border-outline-variant/20 pb-xs">Selecciona tus Ingredientes</h2>
-                <div id="categorias-container">
-                    <!-- Aquí se cargarán dinámicamente las categorías -->
-                    <p class="text-center text-on-surface-variant animate-pulse py-8">Cargando opciones...</p>
+            <div class="botanical-card rounded-xl p-md">
+                <h2 class="font-label-md text-label-md text-secondary uppercase tracking-widest mb-md border-b border-outline-variant/20 pb-xs">Selecciona tus Días</h2>
+
+                <!-- Ubicación -->
+                <div class="mb-md">
+                    <label class="block text-label-sm font-bold text-on-surface mb-xs" for="ubicacion">📍 Ubicación de Entrega</label>
+                    <input class="w-full px-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:opacity-50 text-body-md" id="ubicacion" placeholder="Ej. Betania, Torre Global Calle 50..." required type="text"/>
+                </div>
+
+                <!-- Días de la semana -->
+                <div class="space-y-4" id="dias-container">
+                    <!-- Los días se generarán dinámicamente con JS -->
+                    <p class="text-center text-on-surface-variant animate-pulse py-4">Cargando días...</p>
                 </div>
             </div>
 
-            <!-- Atmospheric Section -->
+            <!-- Compromiso -->
             <div class="p-md bg-surface-container-low rounded-xl border border-outline-variant/20 flex items-start gap-md">
                 <div class="p-sm bg-primary-container text-on-primary-container rounded-full shrink-0">
                     <span class="material-symbols-outlined">eco</span>
@@ -138,47 +150,25 @@
             </div>
         </div>
 
-        <!-- Right Column: Delivery Form -->
+        <!-- Right Column: Resumen y envío -->
         <div class="lg:col-span-5">
             <div class="botanical-card rounded-xl p-md sticky top-24">
-                <h2 class="font-label-md text-label-md text-primary mb-md">Información de Entrega</h2>
-                <form class="space-y-md" id="checkout-form">
-                    <div>
-                        <label class="block text-label-sm font-bold text-on-surface mb-xs" for="full-name">Nombre Completo</label>
-                        <input class="w-full px-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:opacity-50 text-body-md" id="full-name" placeholder="Ej. Mariana González" required="" type="text"/>
-                    </div>
-                    <div>
-                        <label class="block text-label-sm font-bold text-on-surface mb-xs" for="address">Dirección de Entrega</label>
-                        <textarea class="w-full px-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:opacity-50 text-body-md resize-none" id="address" placeholder="Calle, edificio, número de apto..." required="" rows="3"></textarea>
-                    </div>
-                    <button class="w-full mt-lg flex items-center justify-center gap-md bg-[#25D366] text-white py-lg rounded-xl font-label-md text-headline-md hover:brightness-105 active:scale-[0.98] transition-all shadow-md" type="submit">
-                        <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24">
-                            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.539 2.016 2.126-.54c1.079.59 1.987.914 3.16.915 3.18 0 5.765-2.587 5.767-5.767 0-3.18-2.585-5.777-5.765-5.777zm3.387 8.192c-.159.43-.914.811-1.27.832-.36.02-.707.164-2.316-.464-1.61-.631-2.613-2.274-2.693-2.381-.08-.108-.656-.874-.656-1.665 0-.791.408-1.177.552-1.345.144-.17.315-.213.421-.213.106 0 .212.001.304.005.101.005.237-.038.37.284.133.327.456 1.114.495 1.194.039.081.065.174.011.285-.054.11-.081.18-.163.272-.081.092-.17.205-.243.275-.081.08-.166.167-.07.33.095.163.424.698.91 1.132.625.556 1.151.728 1.314.81.163.08.261.068.358-.043.098-.111.417-.484.529-.65.112-.165.223-.138.376-.08.152.058.97.457 1.137.54.167.083.277.124.318.196.04.072.04.417-.118.847z"/>
-                        </svg>
-                        Enviar Pedido por WhatsApp
-                    </button>
-                    <p class="text-center text-label-sm text-on-surface-variant/60 pt-sm">Serás redirigido a WhatsApp para confirmar los detalles finales.</p>
-                </form>
+                <h2 class="font-label-md text-label-md text-primary mb-md">Resumen de tu Pedido</h2>
+                <div id="resumen-pedido" class="space-y-2 text-sm text-on-surface-variant mb-4">
+                    <p class="text-center text-on-surface-variant/60 italic">Selecciona días y opciones para ver el resumen.</p>
+                </div>
+                <div class="h-px bg-outline-variant/30 my-sm"></div>
+                <button class="w-full mt-lg flex items-center justify-center gap-md bg-[#25D366] text-white py-lg rounded-xl font-label-md text-headline-md hover:brightness-105 active:scale-[0.98] transition-all shadow-md" id="enviar-btn" type="button">
+                    <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24">
+                        <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.539 2.016 2.126-.54c1.079.59 1.987.914 3.16.915 3.18 0 5.765-2.587 5.767-5.767 0-3.18-2.585-5.777-5.765-5.777zm3.387 8.192c-.159.43-.914.811-1.27.832-.36.02-.707.164-2.316-.464-1.61-.631-2.613-2.274-2.693-2.381-.08-.108-.656-.874-.656-1.665 0-.791.408-1.177.552-1.345.144-.17.315-.213.421-.213.106 0 .212.001.304.005.101.005.237-.038.37.284.133.327.456 1.114.495 1.194.039.081.065.174.011.285-.054.11-.081.18-.163.272-.081.092-.17.205-.243.275-.081.08-.166.167-.07.33.095.163.424.698.91 1.132.625.556 1.151.728 1.314.81.163.08.261.068.358-.043.098-.111.417-.484.529-.65.112-.165.223-.138.376-.08.152.058.97.457 1.137.54.167.083.277.124.318.196.04.072.04.417-.118.847z"/>
+                    </svg>
+                    Enviar Pedido por WhatsApp
+                </button>
+                <p class="text-center text-label-sm text-on-surface-variant/60 pt-sm">Serás redirigido a WhatsApp para confirmar los detalles finales.</p>
             </div>
         </div>
     </div>
 </main>
-
-<!-- Success Overlay -->
-<div class="fixed inset-0 bg-primary/40 backdrop-blur-sm z-[100] flex items-center justify-center p-md hidden" id="success-overlay">
-    <div class="bg-surface p-xl rounded-2xl max-w-sm w-full text-center shadow-xl">
-        <div class="w-16 h-16 bg-secondary-container text-on-secondary-container rounded-full flex items-center justify-center mx-auto mb-md">
-            <span class="material-symbols-outlined text-[40px]">task_alt</span>
-        </div>
-        <h3 class="font-headline-md text-headline-md text-primary mb-sm">¡Listo para enviar!</h3>
-        <p class="text-body-md text-on-surface-variant mb-lg">Estamos preparando tu mensaje de WhatsApp con tu selección.</p>
-        <div class="animate-pulse flex space-x-2 justify-center">
-            <div class="h-2 w-2 bg-secondary rounded-full"></div>
-            <div class="h-2 w-2 bg-secondary rounded-full"></div>
-            <div class="h-2 w-2 bg-secondary rounded-full"></div>
-        </div>
-    </div>
-</div>
 
 <footer class="mt-xl pb-lg border-t border-outline-variant/20 bg-surface-container-low pt-lg">
     <div class="max-w-4xl mx-auto px-margin-mobile text-center">
@@ -192,23 +182,22 @@
 
 <script>
     // ============================================================
-    // CONFIGURACIÓN - URL del Web App
+    // CONFIGURACIÓN
     // ============================================================
     const NUMERO_WHATSAPP = "50766646198";
     const URL_API = "https://script.google.com/macros/s/AKfycbxgBkS4EVEBUwYyPpEDYeVir8G5gvoOlH6kmmcQZFRbp_dCCkjuxv_o5V94-SlYgnwCzg/exec";
 
-    // Categorías que se cargarán desde la hoja (deben coincidir con los nombres de las pestañas)
+    const DIAS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+
+    // Categorías que se cargarán desde la hoja
     const categorias = [
-        { id: 'Proteinas', label: '🥩 Proteínas' },
-        { id: 'Carbohidratos', label: '🍚 Carbohidratos' },
-        { id: 'Ensaladas', label: '🥗 Ensaladas' },
-        { id: 'Toppings', label: '🧂 Toppings' },
-        { id: 'Bases', label: '🥔 Bases' },
-        { id: 'Acompanamientos', label: '🌽 Acompañamientos' },
-        { id: 'GrasasSaludables', label: '🥑 Grasas Saludables' }
+        { id: 'Proteinas', label: 'Proteínas' },
+        { id: 'Bases', label: 'Bases' },
+        { id: 'Toppings', label: 'Toppings' }
     ];
 
-    let selecciones = {}; // Guardará lo seleccionado por el usuario
+    let datos = { Proteinas: [], Bases: [], Toppings: [] };
+    let selecciones = {};
 
     // ============================================================
     // FUNCIONES PARA OBTENER DATOS
@@ -230,114 +219,247 @@
     }
 
     // ============================================================
-    // CARGAR TODAS LAS CATEGORÍAS
+    // CARGAR DATOS Y GENERAR FORMULARIO
     // ============================================================
-    async function cargarCategorias() {
-        const container = document.getElementById('categorias-container');
-        container.innerHTML = '<p class="text-center text-on-surface-variant animate-pulse py-8">Cargando opciones...</p>';
+    async function cargarDatos() {
+        const container = document.getElementById('dias-container');
+        container.innerHTML = '<p class="text-center text-on-surface-variant animate-pulse py-4">Cargando opciones...</p>';
 
         // Obtener todas las categorías en paralelo
         const promises = categorias.map(cat => fetchData(cat.id));
         const resultados = await Promise.all(promises);
 
-        let html = '';
-
         categorias.forEach((cat, idx) => {
-            const items = resultados[idx] || [];
-            if (items.length === 0) return;
+            datos[cat.id] = resultados[idx] || [];
+        });
 
-            // Inicializar selección para esta categoría
-            selecciones[cat.id] = null;
+        // Verificar que haya datos
+        const totalItems = Object.values(datos).reduce((sum, arr) => sum + arr.length, 0);
+        if (totalItems === 0) {
+            container.innerHTML = '<p class="text-center text-red-600">No se pudieron cargar los datos. Verifica la conexión con la hoja de cálculo.</p>';
+            return;
+        }
+
+        // Generar los días
+        let html = '';
+        DIAS.forEach((dia, index) => {
+            const diaId = dia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            const checked = index === 0 ? 'checked' : '';
 
             html += `
-            <div class="mb-lg">
-                <h3 class="font-label-sm text-label-sm text-primary/60 uppercase tracking-wider mb-sm">${cat.label}</h3>
-                <div class="space-y-sm" id="categoria-${cat.id}">
-                    ${items.map(item => `
-                        <label class="flex items-center gap-md p-sm rounded-lg hover:bg-surface-container-low cursor-pointer transition-colors border border-transparent hover:border-outline-variant/30">
-                            <input class="w-5 h-5" type="radio" name="${cat.id}" value="${item.nombre}" data-id="${item.id}" onchange="actualizarSeleccion('${cat.id}', '${item.nombre}')">
-                            <span class="text-body-md text-on-surface">${item.nombre}</span>
-                            ${item.descripcion ? `<span class="text-sm text-on-surface-variant/60 ml-auto">${item.descripcion}</span>` : ''}
-                        </label>
-                    `).join('')}
+            <div class="day-card active rounded-xl border border-outline-variant/30 p-4 ${index === 0 ? 'active' : ''}" id="dia-${diaId}">
+                <div class="flex items-center gap-3 mb-3">
+                    <input type="checkbox" id="chk-${diaId}" class="w-5 h-5 rounded day-checkbox" ${checked} onchange="toggleDia('${diaId}')">
+                    <label for="chk-${diaId}" class="font-bold text-primary text-lg day-label">${dia}</label>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pl-8">
+                    <div>
+                        <label class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Almuerzo</label>
+                        <div class="space-y-1 mt-1">
+                            <select class="w-full px-2 py-1.5 text-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-white" id="alm-${diaId}">
+                                <option value="">Selecciona proteína</option>
+                                ${datos.Proteinas.map(p => `<option value="${p.nombre}">${p.nombre}</option>`).join('')}
+                            </select>
+                            <select class="w-full px-2 py-1.5 text-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-white" id="base-${diaId}">
+                                <option value="">Selecciona base</option>
+                                ${datos.Bases.map(b => `<option value="${b.nombre}">${b.nombre}</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Cena</label>
+                        <div class="space-y-1 mt-1">
+                            <select class="w-full px-2 py-1.5 text-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-white" id="cen-${diaId}">
+                                <option value="">Selecciona proteína</option>
+                                ${datos.Proteinas.map(p => `<option value="${p.nombre}">${p.nombre}</option>`).join('')}
+                            </select>
+                            <select class="w-full px-2 py-1.5 text-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-white" id="top-${diaId}">
+                                <option value="">Selecciona topping</option>
+                                ${datos.Toppings.map(t => `<option value="${t.nombre}">${t.nombre}</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>`;
         });
 
         container.innerHTML = html;
+
+        // Agregar eventos a los selects para actualizar el resumen
+        document.querySelectorAll('select').forEach(sel => {
+            sel.addEventListener('change', actualizarResumen);
+        });
+
+        // Actualizar resumen inicial
+        actualizarResumen();
     }
 
     // ============================================================
-    // ACTUALIZAR SELECCIÓN
+    // FUNCIONES DE INTERACCIÓN
     // ============================================================
-    function actualizarSeleccion(categoria, nombre) {
-        selecciones[categoria] = nombre;
+    function toggleDia(diaId) {
+        const chk = document.getElementById(`chk-${diaId}`);
+        const card = document.getElementById(`dia-${diaId}`);
+        if (chk.checked) {
+            card.classList.remove('inactive');
+            card.classList.add('active');
+            // Habilitar selects
+            card.querySelectorAll('select').forEach(sel => sel.disabled = false);
+        } else {
+            card.classList.remove('active');
+            card.classList.add('inactive');
+            // Deshabilitar selects y limpiar valores
+            card.querySelectorAll('select').forEach(sel => {
+                sel.disabled = true;
+                sel.value = '';
+            });
+        }
+        actualizarResumen();
+    }
+
+    // ============================================================
+    // ACTUALIZAR RESUMEN
+    // ============================================================
+    function actualizarResumen() {
+        const ubicacion = document.getElementById('ubicacion').value || 'No especificada';
+        const resumenContainer = document.getElementById('resumen-pedido');
+        let html = `<p class="font-semibold text-primary text-sm">📍 Ubicación: ${ubicacion}</p>`;
+        let tieneSelecciones = false;
+
+        DIAS.forEach(dia => {
+            const diaId = dia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            const chk = document.getElementById(`chk-${diaId}`);
+            if (!chk || !chk.checked) return;
+
+            const almProteina = document.getElementById(`alm-${diaId}`)?.value || '';
+            const almBase = document.getElementById(`base-${diaId}`)?.value || '';
+            const cenProteina = document.getElementById(`cen-${diaId}`)?.value || '';
+            const cenTopping = document.getElementById(`top-${diaId}`)?.value || '';
+
+            if (almProteina || almBase || cenProteina || cenTopping) {
+                tieneSelecciones = true;
+                html += `<div class="mt-2 pt-2 border-t border-outline-variant/20">`;
+                html += `<p class="font-bold text-primary text-sm">${dia}</p>`;
+
+                if (almProteina && almBase) {
+                    html += `<p class="text-xs text-on-surface-variant ml-2">🍽️ Almuerzo: ${almProteina} + ${almBase}</p>`;
+                } else if (almProteina || almBase) {
+                    html += `<p class="text-xs text-on-surface-variant ml-2">🍽️ Almuerzo: ${almProteina || '?'} + ${almBase || '?'} <span class="text-red-500">(incompleto)</span></p>`;
+                }
+
+                if (cenProteina && cenTopping) {
+                    html += `<p class="text-xs text-on-surface-variant ml-2">🌙 Cena: ${cenProteina} + ${cenTopping}</p>`;
+                } else if (cenProteina || cenTopping) {
+                    html += `<p class="text-xs text-on-surface-variant ml-2">🌙 Cena: ${cenProteina || '?'} + ${cenTopping || '?'} <span class="text-red-500">(incompleto)</span></p>`;
+                }
+
+                html += `</div>`;
+            }
+        });
+
+        if (!tieneSelecciones) {
+            html += `<p class="text-center text-on-surface-variant/60 italic mt-2">Selecciona días y opciones para ver el resumen.</p>`;
+        }
+
+        resumenContainer.innerHTML = html;
     }
 
     // ============================================================
     // ENVIAR PEDIDO A WHATSAPP
     // ============================================================
     function enviarPedido() {
-        const name = document.getElementById('full-name').value;
-        const address = document.getElementById('address').value;
-
-        if (!name || !address) {
-            alert('Por favor, completa tus datos para continuar.');
-            return false;
+        const ubicacion = document.getElementById('ubicacion').value.trim();
+        if (!ubicacion) {
+            alert('Por favor, ingresa tu ubicación de entrega.');
+            return;
         }
 
-        // Verificar que todas las categorías tengan selección
-        let faltantes = [];
-        for (let cat in selecciones) {
-            if (selecciones[cat] === null) {
-                const label = categorias.find(c => c.id === cat);
-                if (label) faltantes.push(label.label);
+        let mensaje = `UBICACIÓN: ${ubicacion.toUpperCase()}\n\n`;
+        let tieneAlgo = false;
+        let incompletos = [];
+
+        DIAS.forEach(dia => {
+            const diaId = dia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            const chk = document.getElementById(`chk-${diaId}`);
+            if (!chk || !chk.checked) return;
+
+            const almProteina = document.getElementById(`alm-${diaId}`)?.value || '';
+            const almBase = document.getElementById(`base-${diaId}`)?.value || '';
+            const cenProteina = document.getElementById(`cen-${diaId}`)?.value || '';
+            const cenTopping = document.getElementById(`top-${diaId}`)?.value || '';
+
+            // Verificar que almuerzo y cena estén completos
+            if (almProteina && almBase && cenProteina && cenTopping) {
+                tieneAlgo = true;
+                mensaje += `*${dia}*\n\n`;
+                mensaje += `_almuerzo_\n`;
+                mensaje += `- *proteína*: ${almProteina}\n`;
+                mensaje += `- *base*: ${almBase}\n\n`;
+                mensaje += `_cena_\n`;
+                mensaje += `- *proteína*: ${cenProteina}\n`;
+                mensaje += `- *_topping_*: ${cenTopping}\n\n`;
+            } else {
+                incompletos.push(dia);
             }
+        });
+
+        if (incompletos.length > 0) {
+            alert(`Los siguientes días tienen opciones incompletas: ${incompletos.join(', ')}. Por favor, completa todas las selecciones.`);
+            return;
         }
 
-        if (faltantes.length > 0) {
-            alert(`Por favor selecciona: ${faltantes.join(', ')}`);
-            return false;
+        if (!tieneAlgo) {
+            alert('Por favor, selecciona al menos un día y completa todas las opciones.');
+            return;
         }
-
-        // Construir mensaje
-        let mensaje = "¡Hola Snacktimepty! 🌱\n\nMe gustaría armar mi plato con los siguientes ingredientes:\n\n";
-        for (let cat in selecciones) {
-            const label = categorias.find(c => c.id === cat);
-            if (label) {
-                mensaje += `• ${label.label.replace(/^[^\s]+\s/, '')}: ${selecciones[cat]}\n`;
-            }
-        }
-        mensaje += `\n📦 *Datos de entrega:*\n• Nombre: ${name}\n• Dirección: ${address}\n\n¿Me confirman disponibilidad? 😊🍱`;
 
         // Mostrar overlay de éxito
         const overlay = document.getElementById('success-overlay');
-        overlay.classList.remove('hidden');
-        overlay.classList.add('flex');
+        if (overlay) {
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+        }
 
         // Redirigir a WhatsApp después de 2 segundos
         setTimeout(() => {
             const encoded = encodeURIComponent(mensaje);
             window.open(`https://wa.me/${NUMERO_WHATSAPP}?text=${encoded}`, '_blank');
-            overlay.classList.add('hidden');
-            overlay.classList.remove('flex');
+            if (overlay) {
+                overlay.classList.add('hidden');
+                overlay.classList.remove('flex');
+            }
         }, 2000);
-
-        return false;
     }
 
     // ============================================================
     // INICIALIZAR
     // ============================================================
     document.addEventListener('DOMContentLoaded', function() {
-        cargarCategorias();
+        cargarDatos();
 
-        // Asignar evento al formulario
-        document.getElementById('checkout-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            enviarPedido();
-        });
+        // Escuchar cambios en ubicación para actualizar resumen
+        document.getElementById('ubicacion').addEventListener('input', actualizarResumen);
+
+        // Botón de enviar
+        document.getElementById('enviar-btn').addEventListener('click', enviarPedido);
     });
 </script>
+
+<!-- Success Overlay -->
+<div class="fixed inset-0 bg-primary/40 backdrop-blur-sm z-[100] flex items-center justify-center p-md hidden" id="success-overlay">
+    <div class="bg-surface p-xl rounded-2xl max-w-sm w-full text-center shadow-xl">
+        <div class="w-16 h-16 bg-secondary-container text-on-secondary-container rounded-full flex items-center justify-center mx-auto mb-md">
+            <span class="material-symbols-outlined text-[40px]">task_alt</span>
+        </div>
+        <h3 class="font-headline-md text-headline-md text-primary mb-sm">¡Listo para enviar!</h3>
+        <p class="text-body-md text-on-surface-variant mb-lg">Estamos preparando tu mensaje de WhatsApp con tu selección.</p>
+        <div class="animate-pulse flex space-x-2 justify-center">
+            <div class="h-2 w-2 bg-secondary rounded-full"></div>
+            <div class="h-2 w-2 bg-secondary rounded-full"></div>
+            <div class="h-2 w-2 bg-secondary rounded-full"></div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
