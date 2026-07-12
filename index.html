@@ -89,15 +89,14 @@
         body { background-color: #fff8f2; color: #1d1b18; -webkit-font-smoothing: antialiased; }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
         .botanical-card { background-color: #ffffff; border: 1px solid rgba(1, 45, 29, 0.1); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        input[type="radio"], input[type="checkbox"] { accent-color: #2b694d; }
+        select { appearance: auto; }
         .day-card { border-left: 4px solid transparent; transition: all 0.3s ease; }
         .day-card.active { border-left-color: #2b694d; background-color: #f0fdf4; }
-        select { appearance: auto; }
     </style>
 </head>
 <body class="font-body-md text-body-md min-h-screen flex flex-col">
 
-<!-- Top Navigation Bar (sin botón Volver) -->
+<!-- Top Navigation Bar -->
 <header class="w-full top-0 sticky z-40 bg-surface/80 backdrop-blur-md px-margin-mobile h-16 flex items-center justify-center border-b border-outline-variant/30">
     <div class="flex items-center gap-2">
         <img alt="Snacktimepty Logo" class="h-8 w-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJfELIP2KZlMhze1lFWu8AFjGFxQc9uzVgiXvf9-5exYBVRhUPKMjPn-X5lcpjdjRC2DiSFwe7T5PQCqFzEPOUqAvlir6heAj0hOGX3ScrhfOMSSH8Foo8PLyGePoMZ2m_s_SXb1TrRMxsWMwSSX132u3DrpzHvHKCH9ywHk7FZAzmldoKjPqXekbYBjbz2nTZqMKnWR2KZ54V47wFlxAzwAyACPvPWX3-xymUrPPk0l2IDSRUbAvtTIM-8Ax-zposEFYesmExKtj9"/>
@@ -106,31 +105,26 @@
 </header>
 
 <main class="flex-grow w-full max-w-6xl mx-auto px-margin-mobile py-lg">
-    <!-- Headline -->
     <section class="mb-lg text-center md:text-left">
         <h1 class="font-headline-md text-headline-md md:text-display-lg md:font-display-lg text-primary mb-sm">Arma tu Menú Semanal</h1>
         <p class="text-on-surface-variant max-w-xl">Selecciona los ingredientes para cada día. Los días que no completes no se incluirán en el pedido.</p>
     </section>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
-        <!-- Left Column: Selección de días y comidas -->
         <div class="lg:col-span-8 space-y-gutter">
             <div class="botanical-card rounded-xl p-md">
                 <h2 class="font-label-md text-label-md text-secondary uppercase tracking-widest mb-md border-b border-outline-variant/20 pb-xs">Selecciona tus Comidas</h2>
 
-                <!-- Ubicación -->
                 <div class="mb-md">
                     <label class="block text-label-sm font-bold text-on-surface mb-xs" for="ubicacion">📍 Ubicación de Entrega</label>
                     <input class="w-full px-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:opacity-50 text-body-md" id="ubicacion" placeholder="Ej. Betania, Torre Global Calle 50..." required type="text"/>
                 </div>
 
-                <!-- Días de la semana (siempre activos) -->
                 <div class="space-y-4" id="dias-container">
                     <p class="text-center text-on-surface-variant animate-pulse py-4">Cargando opciones...</p>
                 </div>
             </div>
 
-            <!-- Compromiso -->
             <div class="p-md bg-surface-container-low rounded-xl border border-outline-variant/20 flex items-start gap-md">
                 <div class="p-sm bg-primary-container text-on-primary-container rounded-full shrink-0">
                     <span class="material-symbols-outlined">eco</span>
@@ -142,7 +136,6 @@
             </div>
         </div>
 
-        <!-- Right Column: Resumen y envío -->
         <div class="lg:col-span-4">
             <div class="botanical-card rounded-xl p-md sticky top-24">
                 <h2 class="font-label-md text-label-md text-primary mb-md">Resumen de tu Pedido</h2>
@@ -150,7 +143,6 @@
                     <p class="text-center text-on-surface-variant/60 italic">Selecciona opciones para ver el resumen.</p>
                 </div>
                 <div class="h-px bg-outline-variant/30 my-sm"></div>
-                <!-- Botón de WhatsApp más pequeño -->
                 <button class="w-full flex items-center justify-center gap-2 bg-[#25D366] text-white py-2.5 px-4 rounded-lg font-medium text-sm hover:brightness-105 active:scale-[0.98] transition-all shadow-md" id="enviar-btn" type="button">
                     <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
                         <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.539 2.016 2.126-.54c1.079.59 1.987.914 3.16.915 3.18 0 5.765-2.587 5.767-5.767 0-3.18-2.585-5.777-5.765-5.777zm3.387 8.192c-.159.43-.914.811-1.27.832-.36.02-.707.164-2.316-.464-1.61-.631-2.613-2.274-2.693-2.381-.08-.108-.656-.874-.656-1.665 0-.791.408-1.177.552-1.345.144-.17.315-.213.421-.213.106 0 .212.001.304.005.101.005.237-.038.37.284.133.327.456 1.114.495 1.194.039.081.065.174.011.285-.054.11-.081.18-.163.272-.081.092-.17.205-.243.275-.081.08-.166.167-.07.33.095.163.424.698.91 1.132.625.556 1.151.728 1.314.81.163.08.261.068.358-.043.098-.111.417-.484.529-.65.112-.165.223-.138.376-.08.152.058.97.457 1.137.54.167.083.277.124.318.196.04.072.04.417-.118.847z"/>
@@ -195,9 +187,8 @@
         { id: 'Ensaladas', label: 'Ensalada' }
     ];
 
-    // Unir todas para cargar datos (sin duplicados)
     const todasCategorias = ['Proteinas', 'Carbohidratos', 'Ensaladas', 'Toppings'];
-    let datos = {};
+    let datos = {}; // datos[cat] = [ {nombre: '...', dia: 'Lunes'}, ... ]
     let selecciones = {}; // { 'Lunes': { almuerzo: {Proteinas: '...', ...}, cena: {...} }, ... }
 
     // ============================================================
@@ -269,12 +260,14 @@
                                     <label class="text-xs text-on-surface-variant font-medium">${cat.label}</label>
                                     <select class="w-full px-2 py-1.5 text-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-white" 
                                             id="alm-${cat.id}-${diaId}" 
-                                            data-dia="${diaId}" 
+                                            data-dia="${dia}" 
                                             data-comida="almuerzo" 
                                             data-categoria="${cat.id}"
                                             onchange="actualizarSeleccion('${diaId}', 'almuerzo', '${cat.id}', this.value)">
                                         <option value="">Seleccionar</option>
-                                        ${(datos[cat.id] || []).map(item => `<option value="${item.nombre}">${item.nombre}</option>`).join('')}
+                                        ${(datos[cat.id] || [])
+                                            .filter(item => !item.dia || item.dia.toLowerCase().includes(dia.toLowerCase()) || item.dia.toLowerCase() === 'todos')
+                                            .map(item => `<option value="${item.nombre}">${item.nombre}</option>`).join('')}
                                     </select>
                                 </div>
                             `).join('')}
@@ -289,12 +282,14 @@
                                     <label class="text-xs text-on-surface-variant font-medium">${cat.label}</label>
                                     <select class="w-full px-2 py-1.5 text-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-white" 
                                             id="cen-${cat.id}-${diaId}" 
-                                            data-dia="${diaId}" 
+                                            data-dia="${dia}" 
                                             data-comida="cena" 
                                             data-categoria="${cat.id}"
                                             onchange="actualizarSeleccion('${diaId}', 'cena', '${cat.id}', this.value)">
                                         <option value="">Seleccionar</option>
-                                        ${(datos[cat.id] || []).map(item => `<option value="${item.nombre}">${item.nombre}</option>`).join('')}
+                                        ${(datos[cat.id] || [])
+                                            .filter(item => !item.dia || item.dia.toLowerCase().includes(dia.toLowerCase()) || item.dia.toLowerCase() === 'todos')
+                                            .map(item => `<option value="${item.nombre}">${item.nombre}</option>`).join('')}
                                     </select>
                                 </div>
                             `).join('')}
