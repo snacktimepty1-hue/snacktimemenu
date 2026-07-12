@@ -92,11 +92,7 @@
         input[type="radio"], input[type="checkbox"] { accent-color: #2b694d; }
         .day-card { border-left: 4px solid transparent; transition: all 0.3s ease; }
         .day-card.active { border-left-color: #2b694d; background-color: #f0fdf4; }
-        .day-card.inactive { opacity: 0.6; }
-        .day-card.inactive select { opacity: 0.6; pointer-events: none; }
-        .day-card.inactive .day-label { opacity: 0.6; }
         select { appearance: auto; }
-        select:disabled { opacity: 0.5; cursor: not-allowed; }
     </style>
 </head>
 <body class="font-body-md text-body-md min-h-screen flex flex-col">
@@ -118,14 +114,14 @@
     <!-- Headline -->
     <section class="mb-lg text-center md:text-left">
         <h1 class="font-headline-md text-headline-md md:text-display-lg md:font-display-lg text-primary mb-sm">Arma tu Menú Semanal</h1>
-        <p class="text-on-surface-variant max-w-xl">Selecciona los días que deseas pedir y elige todos los componentes de tus comidas.</p>
+        <p class="text-on-surface-variant max-w-xl">Selecciona los ingredientes para cada día. Los días que no completes no se incluirán en el pedido.</p>
     </section>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
         <!-- Left Column: Selección de días y comidas -->
         <div class="lg:col-span-8 space-y-gutter">
             <div class="botanical-card rounded-xl p-md">
-                <h2 class="font-label-md text-label-md text-secondary uppercase tracking-widest mb-md border-b border-outline-variant/20 pb-xs">Selecciona tus Días y Comidas</h2>
+                <h2 class="font-label-md text-label-md text-secondary uppercase tracking-widest mb-md border-b border-outline-variant/20 pb-xs">Selecciona tus Comidas</h2>
 
                 <!-- Ubicación -->
                 <div class="mb-md">
@@ -133,7 +129,7 @@
                     <input class="w-full px-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:opacity-50 text-body-md" id="ubicacion" placeholder="Ej. Betania, Torre Global Calle 50..." required type="text"/>
                 </div>
 
-                <!-- Días de la semana -->
+                <!-- Días de la semana (siempre activos) -->
                 <div class="space-y-4" id="dias-container">
                     <p class="text-center text-on-surface-variant animate-pulse py-4">Cargando opciones...</p>
                 </div>
@@ -156,7 +152,7 @@
             <div class="botanical-card rounded-xl p-md sticky top-24">
                 <h2 class="font-label-md text-label-md text-primary mb-md">Resumen de tu Pedido</h2>
                 <div id="resumen-pedido" class="space-y-2 text-sm text-on-surface-variant mb-4 max-h-[400px] overflow-y-auto">
-                    <p class="text-center text-on-surface-variant/60 italic">Selecciona días y opciones para ver el resumen.</p>
+                    <p class="text-center text-on-surface-variant/60 italic">Selecciona opciones para ver el resumen.</p>
                 </div>
                 <div class="h-px bg-outline-variant/30 my-sm"></div>
                 <button class="w-full mt-lg flex items-center justify-center gap-md bg-[#25D366] text-white py-lg rounded-xl font-label-md text-headline-md hover:brightness-105 active:scale-[0.98] transition-all shadow-md" id="enviar-btn" type="button">
@@ -190,18 +186,14 @@
 
     const DIAS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
 
-    // Todas las categorías que se cargarán desde la hoja (deben coincidir con los nombres de las pestañas)
+    // Solo tres categorías como solicitó
     const CATEGORIAS = [
         { id: 'Proteinas', label: 'Proteína' },
-        { id: 'Carbohidratos', label: 'Carbohidrato' },
-        { id: 'Bases', label: 'Base Keto' },
         { id: 'Ensaladas', label: 'Ensalada' },
-        { id: 'Acompanamientos', label: 'Acompañamiento' },
-        { id: 'GrasasSaludables', label: 'Grasa Saludable' },
-        { id: 'Toppings', label: 'Topping' }
+        { id: 'Carbohidratos', label: 'Carbohidrato' }
     ];
 
-    let datos = {}; // { 'Proteinas': [...], 'Carbohidratos': [...], ... }
+    let datos = {}; // { 'Proteinas': [...], 'Ensaladas': [...], 'Carbohidratos': [...] }
     let selecciones = {}; // { 'Lunes': { almuerzo: {Proteinas: '...', ...}, cena: {...} }, ... }
 
     // ============================================================
@@ -255,17 +247,15 @@
             });
         });
 
-        // Generar los días
+        // Generar los días (sin checkboxes, siempre activos)
         let html = '';
         DIAS.forEach((dia, index) => {
             const diaId = dia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-            const checked = index === 0 ? 'checked' : '';
 
             html += `
-            <div class="day-card active rounded-xl border border-outline-variant/30 p-4 ${index === 0 ? 'active' : ''}" id="dia-${diaId}">
+            <div class="day-card rounded-xl border border-outline-variant/30 p-4 active" id="dia-${diaId}">
                 <div class="flex items-center gap-3 mb-3">
-                    <input type="checkbox" id="chk-${diaId}" class="w-5 h-5 rounded day-checkbox" ${checked} onchange="toggleDia('${diaId}')">
-                    <label for="chk-${diaId}" class="font-bold text-primary text-lg day-label">${dia}</label>
+                    <span class="font-bold text-primary text-lg day-label">${dia}</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pl-8">
                     <!-- ALMUERZO -->
@@ -321,33 +311,6 @@
     // ============================================================
     // FUNCIONES DE INTERACCIÓN
     // ============================================================
-    function toggleDia(diaId) {
-        const chk = document.getElementById(`chk-${diaId}`);
-        const card = document.getElementById(`dia-${diaId}`);
-        if (chk.checked) {
-            card.classList.remove('inactive');
-            card.classList.add('active');
-            // Habilitar selects
-            card.querySelectorAll('select').forEach(sel => sel.disabled = false);
-        } else {
-            card.classList.remove('active');
-            card.classList.add('inactive');
-            // Deshabilitar selects y limpiar valores
-            card.querySelectorAll('select').forEach(sel => {
-                sel.disabled = true;
-                sel.value = '';
-                // Limpiar selecciones guardadas
-                const dia = diaId;
-                const comida = sel.id.startsWith('alm') ? 'almuerzo' : 'cena';
-                const categoria = sel.dataset.categoria;
-                if (selecciones[dia] && selecciones[dia][comida]) {
-                    selecciones[dia][comida][categoria] = '';
-                }
-            });
-        }
-        actualizarResumen();
-    }
-
     function actualizarSeleccion(diaId, comida, categoria, valor) {
         if (!selecciones[diaId]) selecciones[diaId] = { almuerzo: {}, cena: {} };
         if (!selecciones[diaId][comida]) selecciones[diaId][comida] = {};
@@ -366,9 +329,6 @@
 
         DIAS.forEach(dia => {
             const diaId = dia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-            const chk = document.getElementById(`chk-${diaId}`);
-            if (!chk || !chk.checked) return;
-
             const alm = selecciones[diaId]?.almuerzo || {};
             const cen = selecciones[diaId]?.cena || {};
 
@@ -406,7 +366,7 @@
         });
 
         if (!tieneSelecciones) {
-            html += `<p class="text-center text-on-surface-variant/60 italic mt-2">Selecciona días y opciones para ver el resumen.</p>`;
+            html += `<p class="text-center text-on-surface-variant/60 italic mt-2">Selecciona opciones para armar tu pedido.</p>`;
         }
 
         resumenContainer.innerHTML = html;
@@ -428,9 +388,6 @@
 
         DIAS.forEach(dia => {
             const diaId = dia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-            const chk = document.getElementById(`chk-${diaId}`);
-            if (!chk || !chk.checked) return;
-
             const alm = selecciones[diaId]?.almuerzo || {};
             const cen = selecciones[diaId]?.cena || {};
 
@@ -439,8 +396,7 @@
             const cenCompleto = Object.values(cen).some(v => v !== '');
 
             if (!almCompleto && !cenCompleto) {
-                diasIncompletos.push(dia);
-                return;
+                return; // no incluir este día
             }
 
             tieneAlgo = true;
@@ -467,13 +423,8 @@
             }
         });
 
-        if (diasIncompletos.length > 0) {
-            alert(`Los siguientes días no tienen selecciones completas: ${diasIncompletos.join(', ')}. Por favor, completa al menos una opción en almuerzo o cena.`);
-            return;
-        }
-
         if (!tieneAlgo) {
-            alert('Por favor, selecciona al menos un día y completa las opciones.');
+            alert('Por favor, selecciona al menos una opción para algún día (puede ser solo almuerzo, solo cena, o ambos).');
             return;
         }
 
