@@ -97,17 +97,12 @@
 </head>
 <body class="font-body-md text-body-md min-h-screen flex flex-col">
 
-<!-- Top Navigation Bar -->
-<header class="w-full top-0 sticky z-40 bg-surface/80 backdrop-blur-md px-margin-mobile h-16 flex items-center justify-between border-b border-outline-variant/30">
-    <button class="flex items-center gap-2 text-primary hover:opacity-70 transition-opacity active:scale-95" onclick="history.back()">
-        <span class="material-symbols-outlined">arrow_back</span>
-        <span class="font-label-md text-label-md">Volver</span>
-    </button>
+<!-- Top Navigation Bar (sin botón Volver) -->
+<header class="w-full top-0 sticky z-40 bg-surface/80 backdrop-blur-md px-margin-mobile h-16 flex items-center justify-center border-b border-outline-variant/30">
     <div class="flex items-center gap-2">
         <img alt="Snacktimepty Logo" class="h-8 w-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJfELIP2KZlMhze1lFWu8AFjGFxQc9uzVgiXvf9-5exYBVRhUPKMjPn-X5lcpjdjRC2DiSFwe7T5PQCqFzEPOUqAvlir6heAj0hOGX3ScrhfOMSSH8Foo8PLyGePoMZ2m_s_SXb1TrRMxsWMwSSX132u3DrpzHvHKCH9ywHk7FZAzmldoKjPqXekbYBjbz2nTZqMKnWR2KZ54V47wFlxAzwAyACPvPWX3-xymUrPPk0l2IDSRUbAvtTIM-8Ax-zposEFYesmExKtj9"/>
         <span class="font-bold text-headline-md text-primary hidden sm:inline">Snacktimepty</span>
     </div>
-    <div class="w-8"></div>
 </header>
 
 <main class="flex-grow w-full max-w-6xl mx-auto px-margin-mobile py-lg">
@@ -155,13 +150,14 @@
                     <p class="text-center text-on-surface-variant/60 italic">Selecciona opciones para ver el resumen.</p>
                 </div>
                 <div class="h-px bg-outline-variant/30 my-sm"></div>
-                <button class="w-full mt-lg flex items-center justify-center gap-md bg-[#25D366] text-white py-lg rounded-xl font-label-md text-headline-md hover:brightness-105 active:scale-[0.98] transition-all shadow-md" id="enviar-btn" type="button">
-                    <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24">
+                <!-- Botón de WhatsApp más pequeño -->
+                <button class="w-full flex items-center justify-center gap-2 bg-[#25D366] text-white py-2.5 px-4 rounded-lg font-medium text-sm hover:brightness-105 active:scale-[0.98] transition-all shadow-md" id="enviar-btn" type="button">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
                         <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.539 2.016 2.126-.54c1.079.59 1.987.914 3.16.915 3.18 0 5.765-2.587 5.767-5.767 0-3.18-2.585-5.777-5.765-5.777zm3.387 8.192c-.159.43-.914.811-1.27.832-.36.02-.707.164-2.316-.464-1.61-.631-2.613-2.274-2.693-2.381-.08-.108-.656-.874-.656-1.665 0-.791.408-1.177.552-1.345.144-.17.315-.213.421-.213.106 0 .212.001.304.005.101.005.237-.038.37.284.133.327.456 1.114.495 1.194.039.081.065.174.011.285-.054.11-.081.18-.163.272-.081.092-.17.205-.243.275-.081.08-.166.167-.07.33.095.163.424.698.91 1.132.625.556 1.151.728 1.314.81.163.08.261.068.358-.043.098-.111.417-.484.529-.65.112-.165.223-.138.376-.08.152.058.97.457 1.137.54.167.083.277.124.318.196.04.072.04.417-.118.847z"/>
                     </svg>
-                    Enviar Pedido por WhatsApp
+                    Enviar por WhatsApp
                 </button>
-                <p class="text-center text-label-sm text-on-surface-variant/60 pt-sm">Serás redirigido a WhatsApp para confirmar los detalles finales.</p>
+                <p class="text-center text-label-sm text-on-surface-variant/60 pt-1 text-xs">Serás redirigido a WhatsApp para confirmar.</p>
             </div>
         </div>
     </div>
@@ -186,14 +182,22 @@
 
     const DIAS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
 
-    // Solo tres categorías como solicitó
-    const CATEGORIAS = [
+    // Definir categorías para cada comida
+    const CATEGORIAS_ALMUERZO = [
         { id: 'Proteinas', label: 'Proteína' },
-        { id: 'Ensaladas', label: 'Ensalada' },
-        { id: 'Carbohidratos', label: 'Carbohidrato' }
+        { id: 'Carbohidratos', label: 'Acompañamiento' },
+        { id: 'Ensaladas', label: 'Ensalada' }
     ];
 
-    let datos = {}; // { 'Proteinas': [...], 'Ensaladas': [...], 'Carbohidratos': [...] }
+    const CATEGORIAS_CENA = [
+        { id: 'Proteinas', label: 'Proteína' },
+        { id: 'Toppings', label: 'Topping' },
+        { id: 'Ensaladas', label: 'Ensalada' }
+    ];
+
+    // Unir todas para cargar datos (sin duplicados)
+    const todasCategorias = ['Proteinas', 'Carbohidratos', 'Ensaladas', 'Toppings'];
+    let datos = {};
     let selecciones = {}; // { 'Lunes': { almuerzo: {Proteinas: '...', ...}, cena: {...} }, ... }
 
     // ============================================================
@@ -223,11 +227,11 @@
         container.innerHTML = '<p class="text-center text-on-surface-variant animate-pulse py-4">Cargando opciones...</p>';
 
         // Obtener todas las categorías en paralelo
-        const promises = CATEGORIAS.map(cat => fetchData(cat.id));
+        const promises = todasCategorias.map(cat => fetchData(cat));
         const resultados = await Promise.all(promises);
 
-        CATEGORIAS.forEach((cat, idx) => {
-            datos[cat.id] = resultados[idx] || [];
+        todasCategorias.forEach((cat, idx) => {
+            datos[cat] = resultados[idx] || [];
         });
 
         // Verificar que haya datos
@@ -241,13 +245,11 @@
         DIAS.forEach(dia => {
             const diaId = dia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             selecciones[dia] = { almuerzo: {}, cena: {} };
-            CATEGORIAS.forEach(cat => {
-                selecciones[dia].almuerzo[cat.id] = '';
-                selecciones[dia].cena[cat.id] = '';
-            });
+            CATEGORIAS_ALMUERZO.forEach(cat => { selecciones[dia].almuerzo[cat.id] = ''; });
+            CATEGORIAS_CENA.forEach(cat => { selecciones[dia].cena[cat.id] = ''; });
         });
 
-        // Generar los días (sin checkboxes, siempre activos)
+        // Generar los días
         let html = '';
         DIAS.forEach((dia, index) => {
             const diaId = dia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -262,7 +264,7 @@
                     <div>
                         <div class="bg-surface-container-low rounded-lg p-3 border border-outline-variant/20">
                             <h4 class="text-xs font-bold text-secondary uppercase tracking-wider mb-2">🍽️ Almuerzo</h4>
-                            ${CATEGORIAS.map(cat => `
+                            ${CATEGORIAS_ALMUERZO.map(cat => `
                                 <div class="mb-2">
                                     <label class="text-xs text-on-surface-variant font-medium">${cat.label}</label>
                                     <select class="w-full px-2 py-1.5 text-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-white" 
@@ -282,7 +284,7 @@
                     <div>
                         <div class="bg-surface-container-low rounded-lg p-3 border border-outline-variant/20">
                             <h4 class="text-xs font-bold text-secondary uppercase tracking-wider mb-2">🌙 Cena</h4>
-                            ${CATEGORIAS.map(cat => `
+                            ${CATEGORIAS_CENA.map(cat => `
                                 <div class="mb-2">
                                     <label class="text-xs text-on-surface-variant font-medium">${cat.label}</label>
                                     <select class="w-full px-2 py-1.5 text-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-white" 
@@ -332,7 +334,6 @@
             const alm = selecciones[diaId]?.almuerzo || {};
             const cen = selecciones[diaId]?.cena || {};
 
-            // Verificar si hay al menos una selección en almuerzo o cena
             const almCompleto = Object.values(alm).some(v => v !== '');
             const cenCompleto = Object.values(cen).some(v => v !== '');
 
@@ -343,7 +344,7 @@
 
                 if (almCompleto) {
                     html += `<div class="ml-2"><span class="text-xs font-semibold text-secondary">Almuerzo:</span>`;
-                    CATEGORIAS.forEach(cat => {
+                    CATEGORIAS_ALMUERZO.forEach(cat => {
                         if (alm[cat.id]) {
                             html += `<span class="text-xs text-on-surface-variant block ml-2">${cat.label}: ${alm[cat.id]}</span>`;
                         }
@@ -353,7 +354,7 @@
 
                 if (cenCompleto) {
                     html += `<div class="ml-2"><span class="text-xs font-semibold text-secondary">Cena:</span>`;
-                    CATEGORIAS.forEach(cat => {
+                    CATEGORIAS_CENA.forEach(cat => {
                         if (cen[cat.id]) {
                             html += `<span class="text-xs text-on-surface-variant block ml-2">${cat.label}: ${cen[cat.id]}</span>`;
                         }
@@ -384,27 +385,23 @@
 
         let mensaje = `UBICACIÓN: ${ubicacion.toUpperCase()}\n\n`;
         let tieneAlgo = false;
-        let diasIncompletos = [];
 
         DIAS.forEach(dia => {
             const diaId = dia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             const alm = selecciones[diaId]?.almuerzo || {};
             const cen = selecciones[diaId]?.cena || {};
 
-            // Verificar si hay alguna selección en almuerzo o cena
             const almCompleto = Object.values(alm).some(v => v !== '');
             const cenCompleto = Object.values(cen).some(v => v !== '');
 
-            if (!almCompleto && !cenCompleto) {
-                return; // no incluir este día
-            }
+            if (!almCompleto && !cenCompleto) return;
 
             tieneAlgo = true;
             mensaje += `*${dia}*\n\n`;
 
             if (almCompleto) {
                 mensaje += `_almuerzo_\n`;
-                CATEGORIAS.forEach(cat => {
+                CATEGORIAS_ALMUERZO.forEach(cat => {
                     if (alm[cat.id]) {
                         mensaje += `- *${cat.label.toLowerCase()}*: ${alm[cat.id]}\n`;
                     }
@@ -414,7 +411,7 @@
 
             if (cenCompleto) {
                 mensaje += `_cena_\n`;
-                CATEGORIAS.forEach(cat => {
+                CATEGORIAS_CENA.forEach(cat => {
                     if (cen[cat.id]) {
                         mensaje += `- *${cat.label.toLowerCase()}*: ${cen[cat.id]}\n`;
                     }
@@ -424,7 +421,7 @@
         });
 
         if (!tieneAlgo) {
-            alert('Por favor, selecciona al menos una opción para algún día (puede ser solo almuerzo, solo cena, o ambos).');
+            alert('Por favor, selecciona al menos una opción para algún día.');
             return;
         }
 
@@ -435,7 +432,6 @@
             overlay.classList.add('flex');
         }
 
-        // Redirigir a WhatsApp después de 2 segundos
         setTimeout(() => {
             const encoded = encodeURIComponent(mensaje);
             window.open(`https://wa.me/${NUMERO_WHATSAPP}?text=${encoded}`, '_blank');
@@ -443,7 +439,7 @@
                 overlay.classList.add('hidden');
                 overlay.classList.remove('flex');
             }
-        }, 2000);
+        }, 1500);
     }
 
     // ============================================================
@@ -452,10 +448,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         cargarDatos();
 
-        // Escuchar cambios en ubicación para actualizar resumen
         document.getElementById('ubicacion').addEventListener('input', actualizarResumen);
-
-        // Botón de enviar
         document.getElementById('enviar-btn').addEventListener('click', enviarPedido);
     });
 </script>
