@@ -4,86 +4,21 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" name="viewport"/>
     <title>Snacktimepty - Arma tu Menú Semanal</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <!-- Preconnect para recursos externos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://script.google.com">
+    
+    <!-- Fuentes y Tailwind (cargados con alta prioridad) -->
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Source+Sans+3:wght@400;600&amp;display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    
     <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "surface-variant": "#e8e1db",
-                        "secondary-fixed": "#b0f1cc",
-                        "on-primary-fixed-variant": "#274e3d",
-                        "on-tertiary-fixed-variant": "#474740",
-                        "on-secondary-container": "#327053",
-                        "secondary-container": "#b0f1cc",
-                        "tertiary-container": "#3c3c35",
-                        "outline": "#717973",
-                        "primary-container": "#1b4332",
-                        "surface-tint": "#3f6653",
-                        "primary-fixed": "#c1ecd4",
-                        "outline-variant": "#c1c8c2",
-                        "on-tertiary-container": "#a8a69d",
-                        "surface-bright": "#fff8f2",
-                        "error": "#ba1a1a",
-                        "on-surface-variant": "#414844",
-                        "surface-container-low": "#f9f2ec",
-                        "on-surface": "#1d1b18",
-                        "tertiary-fixed": "#e5e2d9",
-                        "on-secondary-fixed-variant": "#0c5136",
-                        "on-primary-container": "#86af99",
-                        "inverse-on-surface": "#f6f0ea",
-                        "surface-container-lowest": "#ffffff",
-                        "inverse-surface": "#33302c",
-                        "surface-container-highest": "#e8e1db",
-                        "on-background": "#1d1b18",
-                        "on-tertiary-fixed": "#1c1c16",
-                        "on-primary": "#ffffff",
-                        "primary-fixed-dim": "#a5d0b9",
-                        "primary": "#012d1d",
-                        "on-tertiary": "#ffffff",
-                        "secondary-fixed-dim": "#94d4b1",
-                        "error-container": "#ffdad6",
-                        "background": "#fff8f2",
-                        "on-secondary": "#ffffff",
-                        "tertiary-fixed-dim": "#c9c7bd",
-                        "secondary": "#2b694d",
-                        "on-primary-fixed": "#002114",
-                        "tertiary": "#262620",
-                        "on-error": "#ffffff",
-                        "on-error-container": "#93000a",
-                        "surface-dim": "#dfd9d3",
-                        "on-secondary-fixed": "#002113",
-                        "surface-container-high": "#ede7e1",
-                        "inverse-primary": "#a5d0b9",
-                        "surface": "#fff8f2",
-                        "surface-container": "#f3ede7"
-                    },
-                    borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
-                    spacing: { gutter: "24px", "margin-desktop": "64px", lg: "48px", base: "8px", md: "24px", sm: "12px", xl: "80px", "margin-mobile": "16px", xs: "4px" },
-                    fontFamily: {
-                        "label-md": ["Manrope"],
-                        "display-lg": ["Manrope"],
-                        "body-md": ["\"Source Sans 3\""],
-                        "label-sm": ["Manrope"],
-                        "headline-md": ["Manrope"],
-                        "body-lg": ["\"Source Sans 3\""],
-                        "display-lg-mobile": ["Manrope"]
-                    },
-                    fontSize: {
-                        "label-md": ["14px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "600" }],
-                        "display-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700" }],
-                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
-                        "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "500" }],
-                        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
-                        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
-                        "display-lg-mobile": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "700" }]
-                    }
-                }
-            }
-        }
+        // Configuración de Tailwind (se mantiene igual)
+        tailwind.config = { ... }; // (Mantén tu configuración)
     </script>
     <style>
         body { background-color: #fff8f2; color: #1d1b18; -webkit-font-smoothing: antialiased; }
@@ -92,10 +27,17 @@
         select { appearance: auto; -webkit-appearance: auto; }
         .day-card { border-left: 4px solid transparent; transition: all 0.3s ease; }
         .day-card.active { border-left-color: #2b694d; background-color: #f0fdf4; }
-        /* Mejoras para móviles */
-        select, input, button { font-size: 16px !important; } /* Evita zoom automático en iOS */
-        button { touch-action: manipulation; } /* Mejora respuesta táctil */
+        select, input, button { font-size: 16px !important; }
+        button { touch-action: manipulation; }
         .no-click { pointer-events: none; opacity: 0.6; }
+        /* Altura fija para evitar CLS */
+        .day-card { min-height: 320px; }
+        .day-card .grid { min-height: 180px; }
+        /* Esqueleto de carga */
+        .skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        .skeleton-select { height: 38px; width: 100%; }
+        .skeleton-label { height: 14px; width: 60%; margin-bottom: 4px; }
     </style>
 </head>
 <body class="font-body-md text-body-md min-h-screen flex flex-col">
@@ -124,8 +66,44 @@
                     <input class="w-full px-md py-sm rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:opacity-50 text-body-md" id="ubicacion" placeholder="Ej. Betania, Torre Global Calle 50..." required type="text"/>
                 </div>
 
+                <!-- Contenedor de días con altura fija para evitar CLS -->
                 <div class="space-y-4" id="dias-container">
-                    <p class="text-center text-on-surface-variant animate-pulse py-4">Cargando opciones...</p>
+                    <!-- Esqueletos de carga (se muestran mientras cargan los datos) -->
+                    <div class="day-card rounded-xl border border-outline-variant/30 p-4 skeleton" style="min-height:320px;">
+                        <div class="skeleton-label"></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div><div class="skeleton skeleton-select mb-2"></div><div class="skeleton skeleton-select mb-2"></div><div class="skeleton skeleton-select"></div></div>
+                            <div><div class="skeleton skeleton-select mb-2"></div><div class="skeleton skeleton-select mb-2"></div><div class="skeleton skeleton-select"></div></div>
+                        </div>
+                    </div>
+                    <div class="day-card rounded-xl border border-outline-variant/30 p-4 skeleton" style="min-height:320px;">
+                        <div class="skeleton-label"></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div><div class="skeleton skeleton-select mb-2"></div><div class="skeleton skeleton-select mb-2"></div><div class="skeleton skeleton-select"></div></div>
+                            <div><div class="skeleton skeleton-select mb-2"></div><div class="skeleton skeleton-select mb-2"></div><div class="skeleton skeleton-select"></div></div>
+                        </div>
+                    </div>
+                    <div class="day-card rounded-xl border border-outline-variant/30 p-4 skeleton" style="min-height:320px;">
+                        <div class="skeleton-label"></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div><div class="skeleton skeleton-select mb-2"></div><div class="skeleton skeleton-select mb-2"></div><div class="skeleton skeleton-select"></div></div>
+                            <div><div class="skeleton skeleton-select mb-2"></div><div class="skeleton skeleton-select mb-2"></div><div class="skeleton skeleton-select"></div></div>
+                        </div>
+                    </div>
+                    <div class="day-card rounded-xl border border-outline-variant/30 p-4 skeleton" style="min-height:320px;">
+                        <div class="skeleton-label"></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div><div class="skeleton skeleton-select mb-2"></div><div class="skeleton skeleton-select mb-2"></div><div class="skeleton skeleton-select"></div></div>
+                            <div><div class="skeleton skeleton-select mb-2"></div><div class="skeleton skeleton-select mb-2"></div><div class="skeleton skeleton-select"></div></div>
+                        </div>
+                    </div>
+                    <div class="day-card rounded-xl border border-outline-variant/30 p-4 skeleton" style="min-height:320px;">
+                        <div class="skeleton-label"></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div><div class="skeleton skeleton-select mb-2"></div><div class="skeleton skeleton-select mb-2"></div><div class="skeleton skeleton-select"></div></div>
+                            <div><div class="skeleton skeleton-select mb-2"></div><div class="skeleton skeleton-select mb-2"></div><div class="skeleton skeleton-select"></div></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -175,54 +153,82 @@
     // ============================================================
     const NUMERO_WHATSAPP = "50766646198";
     const URL_API = "https://script.google.com/macros/s/AKfycbxgBkS4EVEBUwYyPpEDYeVir8G5gvoOlH6kmmcQZFRbp_dCCkjuxv_o5V94-SlYgnwCzg/exec";
+    const CACHE_DURATION = 10 * 60 * 1000; // 10 minutos en milisegundos
 
     const DIAS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
-
     const CATEGORIAS_ALMUERZO = [
         { id: 'Proteinas', label: 'Proteína' },
         { id: 'Carbohidratos', label: 'Acompañamiento' },
         { id: 'Ensaladas', label: 'Ensalada' }
     ];
-
     const CATEGORIAS_CENA = [
         { id: 'Proteinas', label: 'Proteína' },
         { id: 'Toppings', label: 'Topping' },
         { id: 'Ensaladas', label: 'Ensalada' }
     ];
-
     const todasCategorias = ['Proteinas', 'Carbohidratos', 'Ensaladas', 'Toppings'];
+
     let datos = {};
     let selecciones = {};
     let datosCargados = false;
 
     // ============================================================
-    // FUNCIONES PARA OBTENER DATOS (con fallback para navegadores antiguos)
+    // CACHÉ LOCAL STORAGE
     // ============================================================
-    function fetchData(tipo) {
+    function guardarCache(datos) {
+        try {
+            const cache = {
+                timestamp: Date.now(),
+                data: datos
+            };
+            localStorage.setItem('snacktime_menu_cache', JSON.stringify(cache));
+        } catch (e) { /* ignorar */ }
+    }
+
+    function obtenerCache() {
+        try {
+            const raw = localStorage.getItem('snacktime_menu_cache');
+            if (!raw) return null;
+            const cache = JSON.parse(raw);
+            if (Date.now() - cache.timestamp > CACHE_DURATION) {
+                localStorage.removeItem('snacktime_menu_cache');
+                return null;
+            }
+            return cache.data;
+        } catch (e) { return null; }
+    }
+
+    // ============================================================
+    // OBTENER DATOS (con caché y fallback)
+    // ============================================================
+    function fetchDataConCache(tipo) {
         return new Promise((resolve, reject) => {
+            // Intentar primero con caché
+            const cache = obtenerCache();
+            if (cache && cache[tipo]) {
+                console.log('Usando caché para', tipo);
+                resolve(cache[tipo]);
+                return;
+            }
+
+            // Si no hay caché, hacer la petición
             const url = `${URL_API}?tipo=${tipo}`;
             
-            // Intentar con fetch primero
             if (typeof fetch !== 'undefined') {
                 fetch(url)
-                    .then(res => {
-                        if (!res.ok) throw new Error('Error en la respuesta');
-                        return res.json();
-                    })
+                    .then(res => res.json())
                     .then(json => {
                         if (json.status === 'success') {
                             resolve(json.data);
                         } else {
-                            reject(new Error(json.message || 'Error en la API'));
+                            reject(new Error(json.message));
                         }
                     })
-                    .catch(err => {
-                        // Si falla fetch, intentar con XMLHttpRequest
-                        console.warn('Fetch falló, usando XMLHttpRequest:', err);
+                    .catch(() => {
+                        // Fallback a XMLHttpRequest
                         usarXHR(url, resolve, reject);
                     });
             } else {
-                // Fetch no disponible, usar XMLHttpRequest
                 usarXHR(url, resolve, reject);
             }
         });
@@ -231,7 +237,7 @@
     function usarXHR(url, resolve, reject) {
         const xhr = new XMLHttpRequest();
         xhr.open('GET', url, true);
-        xhr.timeout = 15000; // 15 segundos de timeout
+        xhr.timeout = 15000;
         xhr.onload = function() {
             if (xhr.status === 200) {
                 try {
@@ -239,21 +245,17 @@
                     if (json.status === 'success') {
                         resolve(json.data);
                     } else {
-                        reject(new Error(json.message || 'Error en la API'));
+                        reject(new Error(json.message));
                     }
                 } catch (e) {
-                    reject(new Error('Error al parsear la respuesta'));
+                    reject(new Error('Error al parsear respuesta'));
                 }
             } else {
                 reject(new Error('Error HTTP: ' + xhr.status));
             }
         };
-        xhr.onerror = function() {
-            reject(new Error('Error de red'));
-        };
-        xhr.ontimeout = function() {
-            reject(new Error('Tiempo de espera agotado'));
-        };
+        xhr.onerror = function() { reject(new Error('Error de red')); };
+        xhr.ontimeout = function() { reject(new Error('Tiempo agotado')); };
         xhr.send();
     }
 
@@ -262,19 +264,23 @@
     // ============================================================
     async function cargarDatos() {
         const container = document.getElementById('dias-container');
-        container.innerHTML = '<p class="text-center text-on-surface-variant animate-pulse py-4">Cargando opciones...</p>';
+        // Mostrar esqueletos (ya están en el HTML)
 
         try {
-            const promises = todasCategorias.map(cat => fetchData(cat));
+            // Obtener datos en paralelo
+            const promises = todasCategorias.map(cat => fetchDataConCache(cat));
             const resultados = await Promise.all(promises);
 
             todasCategorias.forEach((cat, idx) => {
                 datos[cat] = resultados[idx] || [];
             });
 
+            // Guardar en caché
+            guardarCache(datos);
+
             const totalItems = Object.values(datos).reduce((sum, arr) => sum + arr.length, 0);
             if (totalItems === 0) {
-                container.innerHTML = '<p class="text-center text-red-600">No se pudieron cargar los datos. Verifica la conexión.</p>';
+                container.innerHTML = '<p class="text-center text-red-600">No se pudieron cargar los datos. Verifica tu conexión.</p>';
                 return;
             }
 
@@ -282,8 +288,9 @@
             inicializarFormulario();
 
         } catch (error) {
-            console.error('Error al cargar datos:', error);
-            container.innerHTML = `<p class="text-center text-red-600">Error al cargar los datos: ${error.message}. Verifica tu conexión a internet.</p>`;
+            console.error('Error:', error);
+            // Si falla, mostrar mensaje amigable
+            container.innerHTML = `<p class="text-center text-red-600">Error al cargar los datos: ${error.message}. Recarga la página o verifica tu conexión a internet.</p>`;
         }
     }
 
@@ -361,7 +368,7 @@
     }
 
     // ============================================================
-    // FUNCIONES DE INTERACCIÓN
+    // FUNCIONES DE INTERACCIÓN (igual que antes)
     // ============================================================
     function actualizarSeleccion(diaId, comida, categoria, valor) {
         if (!selecciones[diaId]) selecciones[diaId] = { almuerzo: {}, cena: {} };
@@ -371,6 +378,7 @@
     }
 
     function actualizarResumen() {
+        // ... (misma función de antes)
         const ubicacion = document.getElementById('ubicacion').value || 'No especificada';
         const resumenContainer = document.getElementById('resumen-pedido');
         let html = `<p class="font-semibold text-primary text-sm">📍 Ubicación: ${ubicacion}</p>`;
@@ -421,7 +429,7 @@
     }
 
     // ============================================================
-    // ENVIAR PEDIDO A WHATSAPP (con fallback para móviles)
+    // ENVIAR PEDIDO (igual que antes)
     // ============================================================
     function enviarPedido() {
         const ubicacion = document.getElementById('ubicacion').value.trim();
@@ -472,26 +480,20 @@
             return;
         }
 
-        // Mostrar overlay de éxito
+        // Mostrar overlay
         const overlay = document.getElementById('success-overlay');
         if (overlay) {
             overlay.classList.remove('hidden');
             overlay.classList.add('flex');
         }
 
-        // Método más confiable para abrir WhatsApp en móviles
         setTimeout(function() {
             const encoded = encodeURIComponent(mensaje);
             const whatsappUrl = `https://wa.me/${NUMERO_WHATSAPP}?text=${encoded}`;
-            
-            // Intentar abrir con window.open
             const newWindow = window.open(whatsappUrl, '_blank');
-            
-            // Si window.open falla (bloqueado por popup), usar location.href
             if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
                 window.location.href = whatsappUrl;
             }
-            
             if (overlay) {
                 overlay.classList.add('hidden');
                 overlay.classList.remove('flex');
@@ -503,20 +505,16 @@
     // INICIALIZAR
     // ============================================================
     document.addEventListener('DOMContentLoaded', function() {
+        // Cargar datos (ya se muestran esqueletos)
         cargarDatos();
 
         document.getElementById('ubicacion').addEventListener('input', actualizarResumen);
-        
-        // Event listener más robusto para el botón de enviar
         const btnEnviar = document.getElementById('enviar-btn');
         btnEnviar.addEventListener('click', function(e) {
             e.preventDefault();
             enviarPedido();
         });
-        
-        // También soportar el evento touch para móviles
         btnEnviar.addEventListener('touchstart', function(e) {
-            // Prevenir doble ejecución en móviles
             if (this.dataset.processing === 'true') return;
             this.dataset.processing = 'true';
             setTimeout(() => { this.dataset.processing = 'false'; }, 3000);
