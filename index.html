@@ -2,7 +2,7 @@
 <html class="light" lang="es">
 <head>
     <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" name="viewport"/>
     <title>Snacktimepty - Arma tu Menú Semanal</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Source+Sans+3:wght@400;600&amp;display=swap" rel="stylesheet"/>
@@ -89,9 +89,13 @@
         body { background-color: #fff8f2; color: #1d1b18; -webkit-font-smoothing: antialiased; }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
         .botanical-card { background-color: #ffffff; border: 1px solid rgba(1, 45, 29, 0.1); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        select { appearance: auto; }
+        select { appearance: auto; -webkit-appearance: auto; }
         .day-card { border-left: 4px solid transparent; transition: all 0.3s ease; }
         .day-card.active { border-left-color: #2b694d; background-color: #f0fdf4; }
+        /* Mejoras para móviles */
+        select, input, button { font-size: 16px !important; } /* Evita zoom automático en iOS */
+        button { touch-action: manipulation; } /* Mejora respuesta táctil */
+        .no-click { pointer-events: none; opacity: 0.6; }
     </style>
 </head>
 <body class="font-body-md text-body-md min-h-screen flex flex-col">
@@ -143,7 +147,7 @@
                     <p class="text-center text-on-surface-variant/60 italic">Selecciona opciones para ver el resumen.</p>
                 </div>
                 <div class="h-px bg-outline-variant/30 my-sm"></div>
-                <button class="w-full flex items-center justify-center gap-2 bg-[#25D366] text-white py-2.5 px-4 rounded-lg font-medium text-sm hover:brightness-105 active:scale-[0.98] transition-all shadow-md" id="enviar-btn" type="button">
+                <button class="w-full flex items-center justify-center gap-2 bg-[#25D366] text-white py-3 px-4 rounded-lg font-medium text-sm hover:brightness-105 active:scale-[0.98] transition-all shadow-md" id="enviar-btn" type="button">
                     <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
                         <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.539 2.016 2.126-.54c1.079.59 1.987.914 3.16.915 3.18 0 5.765-2.587 5.767-5.767 0-3.18-2.585-5.777-5.765-5.777zm3.387 8.192c-.159.43-.914.811-1.27.832-.36.02-.707.164-2.316-.464-1.61-.631-2.613-2.274-2.693-2.381-.08-.108-.656-.874-.656-1.665 0-.791.408-1.177.552-1.345.144-.17.315-.213.421-.213.106 0 .212.001.304.005.101.005.237-.038.37.284.133.327.456 1.114.495 1.194.039.081.065.174.011.285-.054.11-.081.18-.163.272-.081.092-.17.205-.243.275-.081.08-.166.167-.07.33.095.163.424.698.91 1.132.625.556 1.151.728 1.314.81.163.08.261.068.358-.043.098-.111.417-.484.529-.65.112-.165.223-.138.376-.08.152.058.97.457 1.137.54.167.083.277.124.318.196.04.072.04.417-.118.847z"/>
                     </svg>
@@ -174,7 +178,6 @@
 
     const DIAS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
 
-    // Definir categorías para cada comida
     const CATEGORIAS_ALMUERZO = [
         { id: 'Proteinas', label: 'Proteína' },
         { id: 'Carbohidratos', label: 'Acompañamiento' },
@@ -188,26 +191,70 @@
     ];
 
     const todasCategorias = ['Proteinas', 'Carbohidratos', 'Ensaladas', 'Toppings'];
-    let datos = {}; // datos[cat] = [ {nombre: '...', dia: 'Lunes'}, ... ]
-    let selecciones = {}; // { 'Lunes': { almuerzo: {Proteinas: '...', ...}, cena: {...} }, ... }
+    let datos = {};
+    let selecciones = {};
+    let datosCargados = false;
 
     // ============================================================
-    // FUNCIONES PARA OBTENER DATOS
+    // FUNCIONES PARA OBTENER DATOS (con fallback para navegadores antiguos)
     // ============================================================
-    async function fetchData(tipo) {
-        try {
-            const resp = await fetch(`${URL_API}?tipo=${tipo}`);
-            const json = await resp.json();
-            if (json.status === 'success') {
-                return json.data;
+    function fetchData(tipo) {
+        return new Promise((resolve, reject) => {
+            const url = `${URL_API}?tipo=${tipo}`;
+            
+            // Intentar con fetch primero
+            if (typeof fetch !== 'undefined') {
+                fetch(url)
+                    .then(res => {
+                        if (!res.ok) throw new Error('Error en la respuesta');
+                        return res.json();
+                    })
+                    .then(json => {
+                        if (json.status === 'success') {
+                            resolve(json.data);
+                        } else {
+                            reject(new Error(json.message || 'Error en la API'));
+                        }
+                    })
+                    .catch(err => {
+                        // Si falla fetch, intentar con XMLHttpRequest
+                        console.warn('Fetch falló, usando XMLHttpRequest:', err);
+                        usarXHR(url, resolve, reject);
+                    });
             } else {
-                console.error('Error al obtener', tipo, json.message);
-                return [];
+                // Fetch no disponible, usar XMLHttpRequest
+                usarXHR(url, resolve, reject);
             }
-        } catch (e) {
-            console.error('Error de red:', e);
-            return [];
-        }
+        });
+    }
+
+    function usarXHR(url, resolve, reject) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.timeout = 15000; // 15 segundos de timeout
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                try {
+                    const json = JSON.parse(xhr.responseText);
+                    if (json.status === 'success') {
+                        resolve(json.data);
+                    } else {
+                        reject(new Error(json.message || 'Error en la API'));
+                    }
+                } catch (e) {
+                    reject(new Error('Error al parsear la respuesta'));
+                }
+            } else {
+                reject(new Error('Error HTTP: ' + xhr.status));
+            }
+        };
+        xhr.onerror = function() {
+            reject(new Error('Error de red'));
+        };
+        xhr.ontimeout = function() {
+            reject(new Error('Tiempo de espera agotado'));
+        };
+        xhr.send();
     }
 
     // ============================================================
@@ -217,20 +264,31 @@
         const container = document.getElementById('dias-container');
         container.innerHTML = '<p class="text-center text-on-surface-variant animate-pulse py-4">Cargando opciones...</p>';
 
-        // Obtener todas las categorías en paralelo
-        const promises = todasCategorias.map(cat => fetchData(cat));
-        const resultados = await Promise.all(promises);
+        try {
+            const promises = todasCategorias.map(cat => fetchData(cat));
+            const resultados = await Promise.all(promises);
 
-        todasCategorias.forEach((cat, idx) => {
-            datos[cat] = resultados[idx] || [];
-        });
+            todasCategorias.forEach((cat, idx) => {
+                datos[cat] = resultados[idx] || [];
+            });
 
-        // Verificar que haya datos
-        const totalItems = Object.values(datos).reduce((sum, arr) => sum + arr.length, 0);
-        if (totalItems === 0) {
-            container.innerHTML = '<p class="text-center text-red-600">No se pudieron cargar los datos. Verifica la conexión con la hoja de cálculo.</p>';
-            return;
+            const totalItems = Object.values(datos).reduce((sum, arr) => sum + arr.length, 0);
+            if (totalItems === 0) {
+                container.innerHTML = '<p class="text-center text-red-600">No se pudieron cargar los datos. Verifica la conexión.</p>';
+                return;
+            }
+
+            datosCargados = true;
+            inicializarFormulario();
+
+        } catch (error) {
+            console.error('Error al cargar datos:', error);
+            container.innerHTML = `<p class="text-center text-red-600">Error al cargar los datos: ${error.message}. Verifica tu conexión a internet.</p>`;
         }
+    }
+
+    function inicializarFormulario() {
+        const container = document.getElementById('dias-container');
 
         // Inicializar selecciones
         DIAS.forEach(dia => {
@@ -240,9 +298,8 @@
             CATEGORIAS_CENA.forEach(cat => { selecciones[dia].cena[cat.id] = ''; });
         });
 
-        // Generar los días
         let html = '';
-        DIAS.forEach((dia, index) => {
+        DIAS.forEach((dia) => {
             const diaId = dia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
             html += `
@@ -300,8 +357,6 @@
         });
 
         container.innerHTML = html;
-
-        // Actualizar resumen inicial
         actualizarResumen();
     }
 
@@ -315,9 +370,6 @@
         actualizarResumen();
     }
 
-    // ============================================================
-    // ACTUALIZAR RESUMEN
-    // ============================================================
     function actualizarResumen() {
         const ubicacion = document.getElementById('ubicacion').value || 'No especificada';
         const resumenContainer = document.getElementById('resumen-pedido');
@@ -369,7 +421,7 @@
     }
 
     // ============================================================
-    // ENVIAR PEDIDO A WHATSAPP
+    // ENVIAR PEDIDO A WHATSAPP (con fallback para móviles)
     // ============================================================
     function enviarPedido() {
         const ubicacion = document.getElementById('ubicacion').value.trim();
@@ -427,9 +479,19 @@
             overlay.classList.add('flex');
         }
 
-        setTimeout(() => {
+        // Método más confiable para abrir WhatsApp en móviles
+        setTimeout(function() {
             const encoded = encodeURIComponent(mensaje);
-            window.open(`https://wa.me/${NUMERO_WHATSAPP}?text=${encoded}`, '_blank');
+            const whatsappUrl = `https://wa.me/${NUMERO_WHATSAPP}?text=${encoded}`;
+            
+            // Intentar abrir con window.open
+            const newWindow = window.open(whatsappUrl, '_blank');
+            
+            // Si window.open falla (bloqueado por popup), usar location.href
+            if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+                window.location.href = whatsappUrl;
+            }
+            
             if (overlay) {
                 overlay.classList.add('hidden');
                 overlay.classList.remove('flex');
@@ -444,7 +506,21 @@
         cargarDatos();
 
         document.getElementById('ubicacion').addEventListener('input', actualizarResumen);
-        document.getElementById('enviar-btn').addEventListener('click', enviarPedido);
+        
+        // Event listener más robusto para el botón de enviar
+        const btnEnviar = document.getElementById('enviar-btn');
+        btnEnviar.addEventListener('click', function(e) {
+            e.preventDefault();
+            enviarPedido();
+        });
+        
+        // También soportar el evento touch para móviles
+        btnEnviar.addEventListener('touchstart', function(e) {
+            // Prevenir doble ejecución en móviles
+            if (this.dataset.processing === 'true') return;
+            this.dataset.processing = 'true';
+            setTimeout(() => { this.dataset.processing = 'false'; }, 3000);
+        });
     });
 </script>
 
